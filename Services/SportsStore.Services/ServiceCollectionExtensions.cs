@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using SportsStore.Interfaces.Products;
+using SportsStore.Services.Data;
 using SportsStore.Services.Products.InMemory;
 
 namespace SportsStore.Services
@@ -8,8 +9,9 @@ namespace SportsStore.Services
     {
         public static IServiceCollection AddSportStoreServices(this IServiceCollection services)
         {
-            services.AddSingleton<IProductsRepository, ProductsRepositoryInMemory>();
+            services.AddTransient<SportStoreDBInitializer>();
 
+            services.AddSingleton<IProductsRepository, ProductsRepositoryInMemory>();
 
             return services;
         }
