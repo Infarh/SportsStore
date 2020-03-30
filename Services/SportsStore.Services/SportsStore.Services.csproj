@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\SportsStore.Domain\SportsStore.Domain.csproj" />
+    <ProjectReference Include="..\SportsStore.DAL\SportsStore.DAL.csproj" />
+    <ProjectReference Include="..\SportsStore.Interfaces\SportsStore.Interfaces.csproj" />
+  </ItemGroup>
+
+</Project>

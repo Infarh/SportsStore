@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+    <Folder Include="Views\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\SportsStore.Domain\SportsStore.Domain.csproj" />
+    <ProjectReference Include="..\..\Services\SportsStore.DAL\SportsStore.DAL.csproj" />
+    <ProjectReference Include="..\..\Services\SportsStore.Interfaces\SportsStore.Interfaces.csproj" />
+    <ProjectReference Include="..\..\Services\SportsStore.Services\SportsStore.Services.csproj" />
+  </ItemGroup>
+
+</Project>
