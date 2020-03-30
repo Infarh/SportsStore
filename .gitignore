@@ -338,3 +338,6 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+/UI/SportsStore/wwwroot/lib
+/UI/SportsStore/wwwroot/css/site.min.css
+/UI/SportsStore/wwwroot/css/site.css
