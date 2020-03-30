@@ -1,9 +1,12 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SportsStore.DAL.Context;
 using SportsStore.Services;
+using SportsStore.Services.Data;
 
 namespace SportsStore
 {
@@ -18,10 +21,15 @@ namespace SportsStore
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
 
             services.AddSportStoreServices();
+
+            services.AddDbContext<SportStoreDB>(opt => opt.UseSqlServer(_Configuration.GetConnectionString("Default")));
+
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, SportStoreDBInitializer db)
         {
+            db.Initialize();
+            
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
