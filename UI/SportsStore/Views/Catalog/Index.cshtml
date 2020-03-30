@@ -1,7 +1,46 @@
-﻿
+﻿@model IEnumerable<Product>
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Каталог товаров";
 }
 
-<h1>Index</h1>
+<h3 class="p-2 bg-secondary text-white text-center">@ViewData["Title"]</h3>
 
+<div class="container-fluid mt-3">
+    <div class="row">
+        <div class="col font-weight-bold">Название</div>
+        <div class="col font-weight-bold">Категория</div>
+        <div class="col font-weight-bold text-right">Цена</div>
+        <div class="col font-weight-bold text-right">Цена (опт.)</div>
+        <div class="col"></div>
+    </div>
+    <form asp-action="AddProduct">
+        <div class="row">
+            <div class="col"><input name="@nameof(Product.Name)" class="form-control" /></div>
+            <div class="col"><input name="@nameof(Product.Category)" class="form-control" /></div>
+            <div class="col"><input name="@nameof(Product.PurchasePrice)" class="form-control" /></div>
+            <div class="col"><input name="@nameof(Product.RetailPrice)" class="form-control" /></div>
+            <div class="col">
+                <button type="submit" class="btn btn-primary">Добавить</button>
+            </div>
+        </div>
+    </form>
+    @if (Model.Any())
+    {
+        @foreach (var product in Model)
+        {
+            <div class="row p-2">
+                <div class="col">@product.Name</div>
+                <div class="col">@product.Category</div>
+                <div class="col text-right">@product.PurchasePrice</div>
+                <div class="col text-right">@product.RetailPrice</div>
+                <div class="col"></div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="row">
+            <div class="col text-center p-2">Товаров в каталоге нет...</div>
+        </div>
+    }
+</div>
