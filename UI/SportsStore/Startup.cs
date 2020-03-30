@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SportsStore.Services;
 
 namespace SportsStore
 {
@@ -15,6 +16,8 @@ namespace SportsStore
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
+
+            services.AddSportStoreServices();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
