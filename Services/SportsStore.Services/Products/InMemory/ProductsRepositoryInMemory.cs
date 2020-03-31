@@ -4,7 +4,7 @@ using SportsStore.Services.Base.InMemory;
 
 namespace SportsStore.Services.Products.InMemory
 {
-    public class ProductsRepositoryInMemory : RepositoryInMemory<Product>, IProductsRepository
+    internal class ProductsRepositoryInMemory : RepositoryInMemory<Product>, IProductsRepository
     {
     }
 }
