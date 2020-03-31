@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Linq;
+using Microsoft.AspNetCore.Mvc;
 using SportsStore.Domain.Models;
 using SportsStore.Interfaces.Products;
 
@@ -10,7 +11,7 @@ namespace SportsStore.Controllers
 
         public CatalogController(IProductsRepository Products) => _Products = Products;
 
-        public IActionResult Index() => View(_Products.Items);
+        public IActionResult Index() => View(_Products.Items.ToArray());
 
         [HttpPost]
         public IActionResult AddProduct(Product product)
