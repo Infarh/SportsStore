@@ -22,7 +22,11 @@ namespace SportsStore
 
             services.AddSportStoreServices();
 
-            services.AddDbContext<SportStoreDB>(opt => opt.UseSqlServer(_Configuration.GetConnectionString("Default")));
+            services.AddDbContext<SportStoreDB>(opt =>
+            {
+                opt.UseSqlServer(_Configuration.GetConnectionString("Default"));
+                opt.EnableSensitiveDataLogging();
+            });
 
         }
 
