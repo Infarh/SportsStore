@@ -25,11 +25,15 @@
         </div>
     </form>
     <div>
-        <div class="row placeholder">
+        @*<div class="row placeholder">
             <div class="col text-center p-2">Товаров в каталоге нет...</div>
-        </div>
+        </div>*@
+        @{
+            var has_any_elements = false;
+        }
         @foreach (var product in Model)
         {
+            has_any_elements = true;
             <div class="row p-2">
                 <div class="col">@product.Name</div>
                 <div class="col">@product.Category</div>
@@ -38,10 +42,16 @@
                 <div class="col"></div>
             </div>
         }
+        @if (!has_any_elements)
+        {
+            <div class="row">
+                <div class="col text-center p-2">Товаров в каталоге нет...</div>
+            </div>
+        }
     </div>
 </div>
 
-@section Styles
+@*@section Styles
 {
     <style>
         .placeholder {
@@ -54,4 +64,4 @@
             display: flex;
         }
     </style>
-}
+}*@
