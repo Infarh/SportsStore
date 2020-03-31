@@ -10,8 +10,12 @@ namespace SportsStore.Interfaces.Base
 
         IEnumerable<T> Items { get; }
 
+        T this[long Id] => Get(Id);
+
         T Get(long id) => Query.FirstOrDefault(item => item.Id == id);
 
         void Add(T item);
+
+        void Update(T item);
     }
 }

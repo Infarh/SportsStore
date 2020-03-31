@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using SportsStore.Domain.Models.Base.Interfaces;
 using SportsStore.Interfaces.Base;
@@ -23,7 +24,17 @@ namespace SportsStore.Services.Base.InMemory
         {
             if (_Items.Contains(item)) return;
             _Items.Add(item);
-        } 
+        }
+
+        void IRepository<T>.Update(T item)
+        {
+            if (item is null) throw new ArgumentNullException(nameof(item));
+            var db_item = ((IRepository<T>) this).Get(item.Id);
+            if (db_item is null || ReferenceEquals(db_item, item)) return;
+            Update(db_item, item);
+        }
+
+        protected abstract void Update(T DbItem, T item);
 
         #endregion
     }

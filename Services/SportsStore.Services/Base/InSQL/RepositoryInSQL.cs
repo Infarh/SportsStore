@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using SportsStore.DAL.Context;
@@ -22,6 +23,13 @@ namespace SportsStore.Services.Base.InSQL
         public void Add(T item)
         {
             ItemsSet.Add(item);
+            _Context.SaveChanges();
+        }
+
+        public void Update(T item)
+        {
+            if (item is null) throw new ArgumentNullException(nameof(item));
+            ItemsSet.Update(item);
             _Context.SaveChanges();
         }
     }

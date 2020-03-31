@@ -1,0 +1,44 @@
+﻿@model Product
+@{
+    ViewData["Title"] = $"Редактирование товара: {Model.Name} ({Model.Category})";
+}
+
+<h3 class="p-2 bg-primary text-white text-center">@ViewData["Title"]</h3>
+
+<form asp-action="UpdateProduct">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="form-group">
+        <label asp-for="Id"></label>
+        <input asp-for="Id" class="form-control" readonly/>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control"/>
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Category"></label>
+        <input asp-for="Category" class="form-control"/>
+        <span asp-validation-for="Category" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="PurchasePrice"></label>
+        <input asp-for="PurchasePrice" class="form-control"/>
+        <span asp-validation-for="PurchasePrice" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="RetailPrice"></label>
+        <input asp-for="RetailPrice" class="form-control"/>
+        <span asp-validation-for="RetailPrice" class="text-danger"></span>
+    </div>
+    
+    <div class="text-center">
+        <button class="btn btn-primary" type="submit">Сохранить</button>
+        <a asp-action="Index" class="btn btn-secondary">Отмена</a>
+    </div>
+</form>

@@ -7,6 +7,7 @@
 
 <div class="container-fluid mt-3">
     <div class="row">
+        <div class="col-1 font-weight-bold">Id</div>
         <div class="col font-weight-bold">Название</div>
         <div class="col font-weight-bold">Категория</div>
         <div class="col font-weight-bold text-right">Цена</div>
@@ -15,12 +16,16 @@
     </div>
     <form asp-action="AddProduct">
         <div class="row">
-            <div class="col"><input name="@nameof(Product.Name)" class="form-control" /></div>
-            <div class="col"><input name="@nameof(Product.Category)" class="form-control" /></div>
-            <div class="col"><input name="@nameof(Product.PurchasePrice)" class="form-control" /></div>
-            <div class="col"><input name="@nameof(Product.RetailPrice)" class="form-control" /></div>
+            <div class="col-1"></div>
+            <div class="col"><input name="@nameof(Product.Name)" class="form-control"/></div>
+            <div class="col"><input name="@nameof(Product.Category)" class="form-control"/></div>
+            <div class="col"><input name="@nameof(Product.PurchasePrice)" class="form-control"/></div>
+            <div class="col"><input name="@nameof(Product.RetailPrice)" class="form-control"/></div>
             <div class="col">
-                <button type="submit" class="btn btn-primary">Добавить</button>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fa fa-plus"></i>
+                    Добавить
+                </button>
             </div>
         </div>
     </form>
@@ -35,11 +40,17 @@
         {
             has_any_elements = true;
             <div class="row p-2">
+                <div class="col-1">@product.Id</div>
                 <div class="col">@product.Name</div>
                 <div class="col">@product.Category</div>
                 <div class="col text-right">@product.PurchasePrice</div>
                 <div class="col text-right">@product.RetailPrice</div>
-                <div class="col"></div>
+                <div class="col">
+                    <a asp-action="UpdateProduct" asp-route-Id="@product.Id" class="btn btn-outline-primary">
+                        <i class="fa fa-edit"></i>
+                        Редактировать
+                    </a>
+                </div>
             </div>
         }
         @if (!has_any_elements)
