@@ -14,4 +14,8 @@
     <ProjectReference Include="..\SportsStore.Interfaces\SportsStore.Interfaces.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Products\InSQL\" />
+  </ItemGroup>
+
 </Project>
