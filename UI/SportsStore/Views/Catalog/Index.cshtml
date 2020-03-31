@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Product>
+﻿@model IQueryable<Product>
 @{
     ViewData["Title"] = "Каталог товаров";
 }
@@ -24,8 +24,10 @@
             </div>
         </div>
     </form>
-    @if (Model.Any())
-    {
+    <div>
+        <div class="row placeholder">
+            <div class="col text-center p-2">Товаров в каталоге нет...</div>
+        </div>
         @foreach (var product in Model)
         {
             <div class="row p-2">
@@ -36,11 +38,20 @@
                 <div class="col"></div>
             </div>
         }
-    }
-    else
-    {
-        <div class="row">
-            <div class="col text-center p-2">Товаров в каталоге нет...</div>
-        </div>
-    }
+    </div>
 </div>
+
+@section Styles
+{
+    <style>
+        .placeholder {
+            visibility: collapse;
+            display: none;
+        }
+
+        .placeholder:only-child {
+            visibility: visible;
+            display: flex;
+        }
+    </style>
+}

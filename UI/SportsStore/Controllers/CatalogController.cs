@@ -11,7 +11,7 @@ namespace SportsStore.Controllers
 
         public CatalogController(IProductsRepository Products) => _Products = Products;
 
-        public IActionResult Index() => View(_Products.Items.ToArray());
+        public IActionResult Index() => View(_Products.Items as IQueryable<Product>);
 
         [HttpPost]
         public IActionResult AddProduct(Product product)
