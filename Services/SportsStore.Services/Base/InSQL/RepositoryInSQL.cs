@@ -29,8 +29,12 @@ namespace SportsStore.Services.Base.InSQL
         public void Update(T item)
         {
             if (item is null) throw new ArgumentNullException(nameof(item));
-            ItemsSet.Update(item);
+            var db_item = ((IRepository<T>) this).Get(item.Id);
+            if (db_item is null) return;
+            Update(db_item, item);
             _Context.SaveChanges();
         }
+
+        protected abstract void Update(T DbItem, T Item);
     }
 }

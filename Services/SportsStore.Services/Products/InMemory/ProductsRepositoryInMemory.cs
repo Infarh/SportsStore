@@ -6,12 +6,12 @@ namespace SportsStore.Services.Products.InMemory
 {
     internal class ProductsRepositoryInMemory : RepositoryInMemory<Product>, IProductsRepository
     {
-        protected override void Update(Product DbItem, Product item)
+        protected override void Update(Product DbItem, Product Item)
         {
-            DbItem.Name = item.Name;
-            DbItem.Category = item.Category;
-            DbItem.PurchasePrice = item.PurchasePrice;
-            DbItem.RetailPrice = item.RetailPrice;
+            DbItem.Name = Item.Name;
+            DbItem.Category = Item.Category;
+            DbItem.PurchasePrice = Item.PurchasePrice;
+            DbItem.RetailPrice = Item.RetailPrice;
         }
     }
 }

@@ -34,7 +34,7 @@ namespace SportsStore.Services.Base.InMemory
             Update(db_item, item);
         }
 
-        protected abstract void Update(T DbItem, T item);
+        protected abstract void Update(T DbItem, T Item);
 
         #endregion
     }
