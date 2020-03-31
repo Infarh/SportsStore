@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using SportsStore.Domain.Models.Base.Interfaces;
 using SportsStore.Interfaces.Base;
 
 namespace SportsStore.Services.Base.InMemory
 {
-    public abstract class RepositoryInMemory<T> : IRepository<T>
+    public abstract class RepositoryInMemory<T> : IRepository<T> where T : class, IEntity
     {
         private readonly List<T> _Items;
 
