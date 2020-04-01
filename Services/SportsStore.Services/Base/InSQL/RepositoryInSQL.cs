@@ -39,7 +39,13 @@ namespace SportsStore.Services.Base.InSQL
 
         public void UpdateAll(params T[] items)
         {
-            ItemsSet.UpdateRange(items);
+            //ItemsSet.UpdateRange(items);
+
+            var items_dictionary = items.ToDictionary(p => p.Id);
+            var db_items = ItemsSet.Where(p => items_dictionary.Keys.Contains(p.Id));
+            foreach (var db_item in db_items)
+                Update(db_item, items_dictionary[db_item.Id]);
+
             _Context.SaveChanges();
         }
     }
