@@ -48,5 +48,11 @@ namespace SportsStore.Services.Base.InSQL
 
             _Context.SaveChanges();
         }
+
+        public void Delete(T item)
+        {
+            ItemsSet.Remove(item);
+            _Context.SaveChanges();
+        }
     }
 }

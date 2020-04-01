@@ -5,8 +5,27 @@
     <li class="nav-item">
         <a class="nav-link" asp-controller="Catalog">Каталог</a>
     </li>
+    @*ajax-confirm="Вы уверены что хотите очистить консоль?"*@
     <li class="nav-item">
-        <a class="nav-link" asp-controller="Home" asp-action="Clear">Очистить</a>
+        <a asp-ajax
+           asp-controller="Console"
+           asp-action="Clear"
+           ajax-loading="#ConsoleClearProgress"
+           class="nav-link">
+            Очистить
+            <i class="fa fa-spinner fa-spin progress-spinner" style="display: none" id="ConsoleClearProgress"></i>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a asp-ajax="true"
+           asp-controller="Console"
+           asp-action="WriteLine"
+           asp-route-Text="Hello World!"
+           ajax-loading="#ConsoleWriteLineProgress"
+           class="nav-link">
+            Тест
+            <i class="fa fa-spinner fa-spin progress-spinner" style="display: none" id="ConsoleWriteLineProgress"></i>
+        </a>
     </li>
     @*<li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

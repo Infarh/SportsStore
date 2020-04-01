@@ -36,6 +36,8 @@ namespace SportsStore.Services.Base.InMemory
 
         protected abstract void Update(T DbItem, T Item);
 
+        void IRepository<T>.Delete(T item) => _Items.Remove(item);
+
         #endregion
     }
 }

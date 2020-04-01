@@ -49,6 +49,9 @@ namespace SportsStore
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
+                    name: "api",
+                    pattern: "api/{controller=Console}/{action=Get}/{id?}");
+                endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });

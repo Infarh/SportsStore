@@ -20,5 +20,7 @@ namespace SportsStore.Interfaces.Base
         void Update(T item);
 
         void UpdateAll(params T[] items) => Array.ForEach(items, Update);
+
+        void Delete(T item);
     }
 }
