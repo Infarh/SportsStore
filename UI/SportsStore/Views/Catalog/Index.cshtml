@@ -6,72 +6,82 @@
 <h3 class="p-2 bg-secondary text-white text-center">@ViewData["Title"]</h3>
 
 <div class="container-fluid mt-3">
-    <div class="row">
-        <div class="col-1 font-weight-bold">Id</div>
-        <div class="col font-weight-bold">Название</div>
-        <div class="col font-weight-bold">Категория</div>
-        <div class="col font-weight-bold text-right">Цена</div>
-        <div class="col font-weight-bold text-right">Цена (опт.)</div>
-        <div class="col"></div>
-    </div>
-    <form asp-action="AddProduct">
-        <div class="row p-2">
-            <div class="col-1"></div>
-            <div class="col"><input name="@nameof(Product.Name)" class="form-control"/></div>
-            <div class="col"><input name="@nameof(Product.Category)" class="form-control"/></div>
-            <div class="col"><input name="@nameof(Product.PurchasePrice)" class="form-control"/></div>
-            <div class="col"><input name="@nameof(Product.RetailPrice)" class="form-control"/></div>
-            <div class="col">
-                @*<input type="submit" value="+" class="btn btn-primary"/>*@
-                <button type="submit" class="btn btn-primary">
-                    <i class="fa fa-plus"></i>
-                </button>
-            </div>
+    @if (ViewBag.UpdateAll != true)
+    {
+        <div class="row">
+            <div class="col-1 font-weight-bold">Id</div>
+            <div class="col font-weight-bold">Название</div>
+            <div class="col font-weight-bold">Категория</div>
+            <div class="col font-weight-bold text-right">Цена</div>
+            <div class="col font-weight-bold text-right">Цена (розн.)</div>
+            <div class="col"></div>
         </div>
-    </form>
-    <div>
-        @*<div class="row placeholder">
-            <div class="col text-center p-2">Товаров в каталоге нет...</div>
-        </div>*@
-        @{
-            var has_any_elements = false;
-        }
-        @foreach (var product in Model)
-        {
-            has_any_elements = true;
+        <form asp-action="AddProduct">
             <div class="row p-2">
-                <div class="col-1">@product.Id</div>
-                <div class="col">@product.Name</div>
-                <div class="col">@product.Category</div>
-                <div class="col text-right">@product.PurchasePrice</div>
-                <div class="col text-right">@product.RetailPrice</div>
+                <div class="col-1"></div>
+                <div class="col"><input name="@nameof(Product.Name)" class="form-control" /></div>
+                <div class="col"><input name="@nameof(Product.Category)" class="form-control" /></div>
+                <div class="col"><input name="@nameof(Product.PurchasePrice)" class="form-control" /></div>
+                <div class="col"><input name="@nameof(Product.RetailPrice)" class="form-control" /></div>
                 <div class="col">
-                    <a asp-action="UpdateProduct" asp-route-Id="@product.Id" class="btn btn-outline-primary">
-                        <i class="fa fa-edit"></i>
-                    </a>
+                    @*<input type="submit" value="+" class="btn btn-primary"/>*@
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa fa-plus"></i>
+                    </button>
                 </div>
             </div>
-        }
-        @if (!has_any_elements)
-        {
-            <div class="row">
-                <div class="col text-center p-2">Товаров в каталоге нет...</div>
-            </div>
-        }
-    </div>
+        </form>
+        <div>
+            @*<div class="row placeholder">
+                    <div class="col text-center p-2">Товаров в каталоге нет...</div>
+                </div>*@
+            @{
+                var has_any_elements = false;
+            }
+            @foreach (var product in Model)
+            {
+                has_any_elements = true;
+                <div class="row p-2">
+                    <div class="col-1">@product.Id</div>
+                    <div class="col">@product.Name</div>
+                    <div class="col">@product.Category</div>
+                    <div class="col text-right">@product.PurchasePrice</div>
+                    <div class="col text-right">@product.RetailPrice</div>
+                    <div class="col">
+                        <a asp-action="UpdateProduct" asp-route-Id="@product.Id" class="btn btn-outline-primary">
+                            <i class="fa fa-edit"></i>
+                        </a>
+                    </div>
+                </div>
+            }
+            @if (!has_any_elements)
+            {
+                <div class="row">
+                    <div class="col text-center p-2">Товаров в каталоге нет...</div>
+                </div>
+            }
+        </div>
+        <div class="text-center">
+            <a asp-action="UpdateAll" class="btn btn-primary">Редактировать все</a>
+        </div>
+    }
+    else
+    {
+        <partial name="Partial/_InlineEditor" model="Model"/>
+    }
 </div>
 
 @*@section Styles
-{
-    <style>
-        .placeholder {
-            visibility: collapse;
-            display: none;
-        }
+    {
+        <style>
+            .placeholder {
+                visibility: collapse;
+                display: none;
+            }
 
-        .placeholder:only-child {
-            visibility: visible;
-            display: flex;
-        }
-    </style>
-}*@
+            .placeholder:only-child {
+                visibility: visible;
+                display: flex;
+            }
+        </style>
+    }*@

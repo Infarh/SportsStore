@@ -36,5 +36,11 @@ namespace SportsStore.Services.Base.InSQL
         }
 
         protected abstract void Update(T DbItem, T Item);
+
+        public void UpdateAll(params T[] items)
+        {
+            ItemsSet.UpdateRange(items);
+            _Context.SaveChanges();
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using SportsStore.Domain.Models.Base.Interfaces;
 
@@ -17,5 +18,7 @@ namespace SportsStore.Interfaces.Base
         void Add(T item);
 
         void Update(T item);
+
+        void UpdateAll(params T[] items) => Array.ForEach(items, Update);
     }
 }

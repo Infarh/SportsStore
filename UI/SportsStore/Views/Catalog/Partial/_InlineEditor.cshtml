@@ -1,0 +1,48 @@
+﻿@using System.Linq
+@using Microsoft.EntityFrameworkCore.Internal
+@model IEnumerable<Product>
+
+<div class="row">
+    <div class="col-1 font-weight-bold">Id</div>
+    <div class="col font-weight-bold">Название</div>
+    <div class="col font-weight-bold">Категория</div>
+    <div class="col font-weight-bold">Цена</div>
+    <div class="col font-weight-bold">Розничная цена</div>
+</div>
+
+@{ var i = 0; }
+<form asp-action="UpdateAll">
+    @foreach (var product in Model)
+    {
+        <div class="row p-2">
+            <div class="col-1">
+                @product.Id
+                <input type="hidden" name="Products[@i].Id" value="@product.Id" />
+            </div>
+
+            <div class="col">
+                <input name="Products[@i].Name" value="@product.Name" class="form-control" />
+            </div>
+
+            <div class="col">
+                <input name="Products[@i].Category" value="@product.Category" class="form-control" />
+            </div>
+
+            <div class="col text-right">
+                <input name="Products[@i].PurchasePrice" value="@product.PurchasePrice" class="form-control" />
+            </div>
+
+            <div class="col text-right">
+                <input name="Products[@i].RetailPrice" value="@product.RetailPrice" class="form-control" />
+            </div>
+        </div>
+
+        i++;
+    }
+    
+    <div class="text-center m-2">
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+        <a asp-action="Index" class="btn btn-outline-primary">Отмена</a>
+    </div>
+</form>
+

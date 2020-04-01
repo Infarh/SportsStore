@@ -29,5 +29,18 @@ namespace SportsStore.Controllers
             _Products.Update(Product);
             return RedirectToAction("Index");
         }
+
+        public IActionResult UpdateAll()
+        {
+            ViewBag.UpdateAll = true;
+            return View(nameof(Index), _Products.Items as IQueryable<Product>);
+        }
+
+        [HttpPost]
+        public IActionResult UpdateAll(Product[] Products)
+        {
+            _Products.UpdateAll(Products);
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
