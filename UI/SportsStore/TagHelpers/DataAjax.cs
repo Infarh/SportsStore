@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.Routing;
@@ -18,35 +19,35 @@ namespace SportsStore.TagHelpers
         private const string __DataAjaxUrlAttribute = "data-ajax-url";
         private const string __DataAjaxUpdateAttribute = "data-ajax-update";
         private const string __DataAjaxLoadingAttribute = "data-ajax-loading";
-        private const string __DataAjaxSuccessAttribute = "data-ajax-success";
         private const string __DataAjaxConfirmAttribute = "data-ajax-confirm";
         private const string __DataAjaxMethodAttribute = "data-ajax-method";
         private const string __DataAjaxModeAttribute = "data-ajax-mode";
+        private const string __DataAjaxDisableOnclickAttribute = "data-ajax-disable-onclick";
+        private const string __DataAjaxUpdateClosestAttribute = "data-ajax-update-closest";
+        private const string __DataAjaxLoadingDurationAttribute = "data-ajax-loading-duration";
+        private const string __DataAjaxBeginAttribute = "data-ajax-begin";
+        private const string __DataAjaxSuccessAttribute = "data-ajax-success";
+        private const string __DataAjaxCompleteAttribute = "data-ajax-complete";
+        private const string __DataAjaxErrorAttribute = "data-ajax-error";
+        private const string __DataAjaxFailureAttribute = "data-ajax-failure";
 
         private const string __HrefAttributeEmptyValue = "#";
         private const string __HrefAttribute = "href";
-
-        private const string __AspAction = "asp-action";
-        private const string __AspController = "asp-controller";
+        private const string __ActionAttribute = "action";
 
         private const string __AjaxUpdate = "ajax-update";
         private const string __AjaxLoading = "ajax-loading";
-        private const string __AjaxSuccess = "ajax-success";
         private const string __AjaxConfirm = "ajax-confirm";
-        private const string __DataAjaxDisableOnclickAttribute = "data-ajax-disable-onclick";
         private const string __AjaxDisableOnclick = "ajax-disable-onclick";
         private const string __AjaxMethod = "ajax-method";
         private const string __AjaxMode = "ajax-mode";
-        private const string __DataAjaxUpdateClosestAttribute = "data-ajax-update-closest";
         private const string __AjaxUpdateClosest = "ajax-update-closest";
-        private const string __DataAjaxBeginAttribute = "data-ajax-begin";
-        private const string __AjaxBegin = "ajax-begin";
-        private const string __DataAjaxCompleteAttribute = "data-ajax-complete";
-        private const string __AjaxComplete = "ajax-complete";
-        private const string __DataAjaxErrorAttribute = "data-ajax-error";
-        private const string __AjaxError = "ajax-error";
-        private const string __DataAjaxLoadingDurationAttribute = "data-ajax-loading-duration";
         private const string __AjaxLoadingDuration = "ajax-loading-duration";
+        private const string __AjaxBegin = "ajax-begin";
+        private const string __AjaxSuccess = "ajax-success";
+        private const string __AjaxComplete = "ajax-complete";
+        private const string __AjaxError = "ajax-error";
+        private const string __AjaxFailure = "ajax-failure";
 
         [HtmlAttributeName(__TagHelperAttributeName)]
         public bool Enabled { get; set; }
@@ -64,10 +65,13 @@ namespace SportsStore.TagHelpers
         public string OnCompleteScriptName { get; set; }
 
         [HtmlAttributeName(__AjaxSuccess)]
-        public string OnSuccessScriptName { get; set; } 
+        public string OnSuccessScriptName { get; set; }
 
         [HtmlAttributeName(__AjaxError)]
         public string OnErrorScriptName { get; set; }
+
+        [HtmlAttributeName(__AjaxFailure)]
+        public string OnFailureScriptName { get; set; }
 
         [HtmlAttributeName(__AjaxConfirm)]
         public string ConfirmMessage { get; set; }
@@ -91,11 +95,29 @@ namespace SportsStore.TagHelpers
         {
             var attributes = output.Attributes;
             attributes.RemoveAll(__TagHelperAttributeName);
-            var href = attributes[__HrefAttribute].Value;
-            if (Enabled)
-                attributes.SetAttribute(__HrefAttribute, __HrefAttributeEmptyValue);
             attributes.SetAttribute(__DataAjaxAttributeName, Enabled.ToString().ToLower());
-            attributes.SetAttribute(__DataAjaxUrlAttribute, href);
+
+            switch (context.TagName.ToLower(CultureInfo.InvariantCulture))
+            {
+                case "a":
+                    var href = attributes[__HrefAttribute].Value;
+                    if (Enabled)
+                        attributes.SetAttribute(__HrefAttribute, __HrefAttributeEmptyValue);
+                    attributes.SetAttribute(__DataAjaxUrlAttribute, href);
+                    break;
+                case "form":
+                    var action = attributes[__ActionAttribute].Value;
+                    if (Enabled)
+                        attributes.RemoveAll(__ActionAttribute);
+                    attributes.SetAttribute(__DataAjaxUrlAttribute, action);
+
+                    var method = attributes["method"].Value.ToString();
+                    if (!string.IsNullOrWhiteSpace(method) && string.IsNullOrWhiteSpace(Method))
+                        Method = method;
+                    attributes.RemoveAll("method");
+                    break;
+            }
+        
 
             if (!string.IsNullOrWhiteSpace(OutputDataElement))
                 attributes.SetAttribute(__DataAjaxUpdateAttribute, OutputDataElement);
@@ -104,7 +126,7 @@ namespace SportsStore.TagHelpers
                 attributes.SetAttribute(__DataAjaxLoadingAttribute, ProgressElement);
 
             if (!string.IsNullOrWhiteSpace(OnBeginScriptName))
-                attributes.SetAttribute(__DataAjaxBeginAttribute, OnBeginScriptName);   
+                attributes.SetAttribute(__DataAjaxBeginAttribute, OnBeginScriptName);
 
             if (!string.IsNullOrWhiteSpace(OnCompleteScriptName))
                 attributes.SetAttribute(__DataAjaxCompleteAttribute, OnCompleteScriptName);
@@ -113,7 +135,10 @@ namespace SportsStore.TagHelpers
                 attributes.SetAttribute(__DataAjaxSuccessAttribute, OnSuccessScriptName);
 
             if (!string.IsNullOrWhiteSpace(OnErrorScriptName))
-                attributes.SetAttribute(__DataAjaxErrorAttribute, OnErrorScriptName);
+                attributes.SetAttribute(__DataAjaxErrorAttribute, OnErrorScriptName);   
+
+            if (!string.IsNullOrWhiteSpace(OnFailureScriptName))
+                attributes.SetAttribute(__DataAjaxFailureAttribute, OnFailureScriptName);
 
             if (!string.IsNullOrWhiteSpace(ConfirmMessage))
                 attributes.SetAttribute(__DataAjaxConfirmAttribute, ConfirmMessage);
@@ -125,12 +150,12 @@ namespace SportsStore.TagHelpers
                 attributes.SetAttribute(__DataAjaxMethodAttribute, Method);
 
             if (!string.IsNullOrWhiteSpace(Mode))
-                attributes.SetAttribute(__DataAjaxMethodAttribute, Mode.ToUpper());
+                attributes.SetAttribute(__DataAjaxModeAttribute, Mode.ToUpper());
 
             if (!string.IsNullOrWhiteSpace(ClosestTargetElementType))
                 attributes.SetAttribute(__DataAjaxUpdateClosestAttribute, ClosestTargetElementType);
 
-            if(LoadngDuration > 0)
+            if (LoadngDuration > 0)
                 attributes.SetAttribute(__DataAjaxLoadingDurationAttribute, LoadngDuration);
         }
     }
