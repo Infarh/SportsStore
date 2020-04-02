@@ -2,15 +2,17 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SportsStore.DAL.Context;
 
 namespace SportsStore.DAL.Migrations
 {
     [DbContext(typeof(SportStoreDB))]
-    partial class SportStoreDBModelSnapshot : ModelSnapshot
+    [Migration("20200402142754_ProductCategoryAdded")]
+    partial class ProductCategoryAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
