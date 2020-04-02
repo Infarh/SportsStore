@@ -20,13 +20,19 @@ namespace SportsStore.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public IActionResult UpdateProduct(long Id) => View(_Products[Id]);
+        public IActionResult UpdateProduct(long? Id) => View(Id > 0 ? _Products[(long)Id] : new Product());
 
         [HttpPost, ValidateAntiForgeryToken]
         public IActionResult UpdateProduct(Product Product)
         {
+            if (Product.Id < 0) return BadRequest();
             if (!ModelState.IsValid) return View(Product);
-            _Products.Update(Product);
+
+            if (Product.Id == 0)
+                _Products.Add(Product);
+            else
+                _Products.Update(Product);
+
             return RedirectToAction("Index");
         }
 
