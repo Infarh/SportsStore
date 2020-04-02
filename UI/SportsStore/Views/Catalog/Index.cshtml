@@ -48,9 +48,15 @@
                     <div class="col text-right">@product.PurchasePrice</div>
                     <div class="col text-right">@product.RetailPrice</div>
                     <div class="col">
-                        <a asp-action="UpdateProduct" asp-route-Id="@product.Id" class="btn btn-outline-primary">
-                            <i class="fa fa-edit"></i>
-                        </a>
+                        <form asp-action="Delete">
+                            <a asp-action="UpdateProduct" asp-route-Id="@product.Id" class="btn btn-outline-primary">
+                                <i class="fa fa-edit"></i>
+                            </a>
+                            <input type="hidden" name="Id" value="@product.Id"/>
+                            <button type="submit" class="btn btn-outline-danger">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </form>
                     </div>
                 </div>
             }
