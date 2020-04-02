@@ -20,25 +20,27 @@ namespace SportsStore.Services.Data
 
             if (!await _Context.Products.AnyAsync().ConfigureAwait(false))
             {
+                var water_sport = new Category { Name = "Водный спорт" };
+                var soccer = new Category { Name = "Футбол" };
                 await _Context.Products.AddRangeAsync(
                     new Product
                     {
-                        Name = "Каяк", 
-                        Category = "Водный спорт",
+                        Name = "Каяк",
+                        Category = water_sport,
                         PurchasePrice = 200,
                         RetailPrice = 275
                     },
                     new Product
                     {
                         Name = "Спасательный жилет",
-                        Category = "Водный спорт",
+                        Category = water_sport,
                         PurchasePrice = 30,
                         RetailPrice = 48.95m
                     },
                     new Product
                     {
                         Name = "Футбольный мяч",
-                        Category = "Футбол",
+                        Category = soccer,
                         PurchasePrice = 17,
                         RetailPrice = 19.50m
                     })
