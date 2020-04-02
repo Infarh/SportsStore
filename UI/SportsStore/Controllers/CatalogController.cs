@@ -36,19 +36,6 @@ namespace SportsStore.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult UpdateAll()
-        {
-            ViewBag.UpdateAll = true;
-            return View(nameof(Index), _Products.Items as IQueryable<Product>);
-        }
-
-        [HttpPost, ValidateAntiForgeryToken]
-        public IActionResult UpdateAll(Product[] Products)
-        {
-            _Products.UpdateAll(Products);
-            return RedirectToAction(nameof(Index));
-        }
-
         [HttpPost, ValidateAntiForgeryToken]
         public IActionResult Delete(Product product)
         {
