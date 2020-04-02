@@ -1,0 +1,51 @@
+﻿@model IEnumerable<Category>
+
+@{
+    ViewData["Title"] = "Категории";
+}
+
+<h3 class="p-2 bg-primary text-white text-center">@ViewData["Title"]</h3>
+
+<div class="container-fluid mt-3">
+    <div class="row">
+        <div class="col-1 font-weight-bold">Id</div>
+        <div class="col font-weight-bold">Название</div>
+        <div class="col font-weight-bold">Описание</div>
+        <div class="col-3"></div>
+    </div>
+
+    @foreach (var category in Model)
+    {
+        @if (category.Id == ViewBag.EditId)
+        {
+            <form asp-action="UpdateCategory">
+                <partial name="Partial/_Editor" model="category" />
+            </form>
+        }
+        else
+        {
+            <div class="row p-2">
+                <div class="col-1">@category.Id</div>
+                <div class="col">@category.Name</div>
+                <div class="col">@category.Description</div>
+                <div class="col-3">
+                    <form asp-action="DeleteCategory">
+                        <input type="hidden" name="Id" value="@category.Id" />
+                        <a asp-action="EditCategory" asp-route-Id="@category.Id" class="btn btn-outline-primary">
+                            <i class="fa fa-edit"></i>
+                        </a>
+                        <button type="submit" class="btn btn-outline-danger">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        }
+    }
+    @if (ViewBag.EditId is null)
+    {
+        <form asp-action="AddCategory">
+            <partial name="Partial/_Editor" model="@new Category()" />
+        </form>
+    }
+</div>
