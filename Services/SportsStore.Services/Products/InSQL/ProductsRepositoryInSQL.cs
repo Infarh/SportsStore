@@ -2,6 +2,7 @@
 using SportsStore.Domain.Models;
 using SportsStore.Interfaces.Products;
 using SportsStore.Services.Base.InSQL;
+using SportsStore.Services.Mapping;
 
 namespace SportsStore.Services.Products.InSQL
 {
@@ -9,12 +10,6 @@ namespace SportsStore.Services.Products.InSQL
     {
         public ProductsRepositoryInSQL(SportStoreDB Context) : base(Context) { }
 
-        protected override void Update(Product DbItem, Product Item)
-        {
-            DbItem.Name = Item.Name;
-            DbItem.Category = Item.Category;
-            DbItem.PurchasePrice = Item.PurchasePrice;
-            DbItem.RetailPrice = Item.RetailPrice;
-        }
+        protected override void Update(Product DbItem, Product Item) => Item.CopyTo(DbItem);
     }
 }

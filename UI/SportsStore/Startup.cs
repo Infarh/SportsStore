@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -5,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SportsStore.DAL.Context;
+using SportsStore.Infrastructure.AutoMapper;
 using SportsStore.Services;
 using SportsStore.Services.Data;
 
@@ -28,6 +30,11 @@ namespace SportsStore
                 opt.EnableSensitiveDataLogging();
             });
 
+            services.AddAutoMapper(opt =>
+                {
+                    opt.AddProfile<ProductMap>();
+                },
+                typeof(Startup));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, SportStoreDBInitializer db)
