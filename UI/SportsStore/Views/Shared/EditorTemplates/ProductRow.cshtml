@@ -1,0 +1,17 @@
+﻿@model IEnumerable<Product>
+
+@foreach (var product in Model)
+{
+    <div class="row p-2">
+        <div class="col-1">@product.Id</div>
+        <div class="col">@product.Name</div>
+        <div class="col">@product.Category</div>
+        <div class="col text-right">@product.PurchasePrice</div>
+        <div class="col text-right">@product.RetailPrice</div>
+        <div class="col">
+            <a asp-action="UpdateProduct" asp-route-Id="@product.Id" class="btn btn-outline-primary">
+                <i class="fa fa-edit"></i>
+            </a>
+        </div>
+    </div>
+}
