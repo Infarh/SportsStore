@@ -2,7 +2,7 @@
 @{
     ViewData["Title"] = Model.Id == 0
         ? "Новый товар"
-        : $"Редактирование товара: {Model.Name} ({Model.Category})";
+        : $"Редактирование товара[id:{Model.Id}]: {Model.Name} ({Model.Category.Name})";
 }
 
 <h3 class="p-2 bg-primary text-white text-center">@ViewData["Title"]</h3>
