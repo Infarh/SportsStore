@@ -18,15 +18,15 @@ namespace SportsStore.Services.Base.InMemory
 
         #region IRepository<T>
 
-        IEnumerable<T> IRepository<T>.Items => _Items.AsReadOnly();
+        public virtual IEnumerable<T> Items => _Items.AsReadOnly();
 
-        void IRepository<T>.Add(T item)
+        public virtual void Add(T item)
         {
             if (_Items.Contains(item)) return;
             _Items.Add(item);
         }
 
-        void IRepository<T>.Update(T item)
+        public virtual void Update(T item)
         {
             if (item is null) throw new ArgumentNullException(nameof(item));
             var db_item = ((IRepository<T>) this).Get(item.Id);
@@ -34,9 +34,9 @@ namespace SportsStore.Services.Base.InMemory
             Update(db_item, item);
         }
 
-        protected abstract void Update(T DbItem, T Item);
+        protected virtual void Update(T DbItem, T Item) => throw new NotImplementedException();
 
-        void IRepository<T>.Delete(T item) => _Items.Remove(item);
+        public virtual void Delete(T item) => _Items.Remove(item);
 
         #endregion
     }

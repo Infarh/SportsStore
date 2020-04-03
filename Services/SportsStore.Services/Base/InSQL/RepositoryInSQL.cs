@@ -12,32 +12,32 @@ namespace SportsStore.Services.Base.InSQL
     {
         private readonly SportStoreDB _Context;
 
-        private DbSet<T> ItemsSet => _Context.Set<T>();
+        protected virtual DbSet<T> ItemsSet => _Context.Set<T>();
 
         public virtual IQueryable<T> Query => ItemsSet;
 
-        public IEnumerable<T> Items => Query.AsEnumerable();
+        public virtual IEnumerable<T> Items => Query.AsEnumerable();
 
         protected RepositoryInSQL(SportStoreDB Context) => _Context = Context;
 
-        public void Add(T item)
+        public virtual void Add(T item)
         {
             ItemsSet.Add(item);
-            _Context.SaveChanges();
+            SaveChanges();
         }
 
-        public void Update(T item)
+        public virtual void Update(T item)
         {
             if (item is null) throw new ArgumentNullException(nameof(item));
             var db_item = ItemsSet.Find(item.Id);
             if (db_item is null) return;
             Update(db_item, item);
-            _Context.SaveChanges();
+            SaveChanges();
         }
 
-        protected abstract void Update(T DbItem, T Item);
+        protected virtual void Update(T DbItem, T Item) => throw new NotImplementedException();
 
-        public void UpdateAll(params T[] items)
+        public virtual void UpdateAll(params T[] items)
         {
             //ItemsSet.UpdateRange(items);
 
@@ -46,13 +46,15 @@ namespace SportsStore.Services.Base.InSQL
             foreach (var db_item in db_items)
                 Update(db_item, items_dictionary[db_item.Id]);
 
-            _Context.SaveChanges();
+            SaveChanges();
         }
 
-        public void Delete(T item)
+        public virtual void Delete(T item)
         {
             ItemsSet.Remove(item);
-            _Context.SaveChanges();
+            SaveChanges();
         }
+
+        public virtual void SaveChanges() => _Context.SaveChanges();
     }
 }
