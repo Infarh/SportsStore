@@ -5,7 +5,7 @@ using SportsStore.Domain.Models.Orders;
 using SportsStore.Interfaces.Products;
 using SportsStore.Services.Base.InSQL;
 
-namespace SportsStore.Services.Products.InSQL
+namespace SportsStore.Services.Products.Repositories
 {
     internal class OrdersRepositoryInSQL : RepositoryInSQL<Order>, IOrdersRepository
     {
