@@ -16,6 +16,8 @@ namespace SportsStore.Services
 
         private static IServiceCollection AddRepositoriesInSQL(this IServiceCollection services) => services
            .AddTransient<IProductsRepository, ProductsRepositoryInSQL>()
-           .AddTransient<ICategoriesRepository, CategoriesRepositoryInSQL>();
+           .AddTransient<ICategoriesRepository, CategoriesRepositoryInSQL>()
+           .AddTransient<IOrdersRepository, OrdersRepositoryInSQL>()
+        ;
     }
 }
