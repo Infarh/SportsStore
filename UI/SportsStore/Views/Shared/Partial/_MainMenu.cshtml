@@ -7,8 +7,8 @@
             Каталог
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" asp-controller="Catalog">Каталог</a>
-            <a class="dropdown-item" asp-controller="Categories">Категории</a>
+            <a asp-controller="Catalog" class="dropdown-item @IsActive("Catalog")">Каталог</a>
+            <a asp-controller="Categories" class="dropdown-item @IsActive("Categories")">Категории</a>
             @*<div class="dropdown-divider"></div>*@
             @*<a class="dropdown-item" href="#">Something else here</a>*@
         </div>
@@ -54,8 +54,8 @@
 
 @functions
 {
-    //string IsActive(string Controller, string Action)
-    //{
-
-    //}
+    string IsActive(string Controller) => 
+        Equals(ViewContext.RouteData.Values["controller"], Controller) 
+            ? "active" 
+            : null;
 }
