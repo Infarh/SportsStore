@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
 using SportsStore.Domain.Models;
 using SportsStore.Interfaces.Products;
 
@@ -12,12 +11,20 @@ namespace SportsStore.Controllers
     [Produces("application/json")]
     public class CatalogApiController : ControllerBase
     {
-        private readonly IProductsRepository _ProductsRepository;
+        private readonly IProductsRepository _Products;
+        private readonly ICategoriesRepository _Categories;
 
-        public CatalogApiController(IProductsRepository ProductsRepository) => _ProductsRepository = ProductsRepository;
+        public CatalogApiController(IProductsRepository Products, ICategoriesRepository Categories)
+        {
+            _Products = Products;
+            _Categories = Categories;
+        }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Product>> Get() => _ProductsRepository.Items.ToArray();
+        public ActionResult<IEnumerable<Product>> Get() => _Products.Items.ToArray();
+
+        [HttpGet("category")]
+        public ActionResult<IEnumerable<Category>> GetCategories() => _Categories.Items.ToArray();
 
         /// <summary>Получить товар по указанному идентификатору</summary>
         /// <param name="Id">Идентификатор товара, который требуется получить</param>
@@ -27,14 +34,21 @@ namespace SportsStore.Controllers
         [HttpGet("{Id}")]
         public ActionResult<Product> Get(long Id)
         {
-            var product = _ProductsRepository[Id];
+            var product = _Products[Id];
             return product ?? (ActionResult<Product>)NotFound();
+        }
+
+        [HttpGet("category/{Id}")]
+        public ActionResult<Category> GetCategory(long Id)
+        {
+            var category = _Categories[Id];
+            return category ?? (ActionResult<Category>) NotFound();
         }
 
         [HttpPost]
         public ActionResult<Product> Post([Bind("Name,Category,PurchasePrice,RetailPrice"), FromBody] Product Product)
         {
-            _ProductsRepository.Add(Product);
+            _Products.Add(Product);
             return CreatedAtAction(nameof(Get), new { Product.Id }, Product);
         }
 
@@ -44,16 +58,16 @@ namespace SportsStore.Controllers
             if (Id != Product.Id)
                 return BadRequest();
 
-            _ProductsRepository.Update(Product);
+            _Products.Update(Product);
             return NoContent();
         }
 
         [HttpDelete("{Id}")]
         public ActionResult<Product> Delete(long Id)
         {
-            var product = _ProductsRepository[Id];
+            var product = _Products[Id];
             if (product is null) return NotFound();
-            _ProductsRepository.Delete(product);
+            _Products.Delete(product);
             return product;
         }
     }
