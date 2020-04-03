@@ -8,8 +8,13 @@ namespace SportsStore.Controllers
     public class CatalogController : Controller
     {
         private readonly IProductsRepository _Products;
+        private readonly ICategoriesRepository _Categories;
 
-        public CatalogController(IProductsRepository Products) => _Products = Products;
+        public CatalogController(IProductsRepository Products, ICategoriesRepository Categories)
+        {
+            _Products = Products;
+            _Categories = Categories;
+        }
 
         public IActionResult Index() => View(_Products.Items as IQueryable<Product>);
 
@@ -20,7 +25,11 @@ namespace SportsStore.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public IActionResult UpdateProduct(long? Id) => View(Id > 0 ? _Products[(long)Id] : new Product());
+        public IActionResult UpdateProduct(long? Id)
+        {
+            ViewBag.Categories = _Categories.Items;
+            return View(Id > 0 ? _Products[(long) Id] : new Product());
+        }
 
         [HttpPost, ValidateAntiForgeryToken]
         public IActionResult UpdateProduct(Product Product)
