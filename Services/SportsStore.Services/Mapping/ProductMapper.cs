@@ -12,6 +12,7 @@ namespace SportsStore.Services.Mapping
             if(Destination is null) throw new ArgumentNullException(nameof(Destination));
 
             Destination.Name = Source.Name;
+            Destination.CategoryId = Source.CategoryId;
             Destination.Category = Source.Category;
             Destination.PurchasePrice = Source.PurchasePrice;
             Destination.RetailPrice = Source.RetailPrice;

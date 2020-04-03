@@ -15,6 +15,12 @@ namespace SportsStore.Services.Products.InSQL
 
         public ProductsRepositoryInSQL(SportStoreDB Context) : base(Context) { }
 
-        protected override void Update(Product DbItem, Product Item) => Item.CopyTo(DbItem);
+        protected override void Update(Product DbItem, Product Item)
+        {
+            DbItem.Name = Item.Name;
+            DbItem.CategoryId = Item.CategoryId;
+            DbItem.PurchasePrice = Item.PurchasePrice;
+            DbItem.RetailPrice = Item.RetailPrice;
+        }
     }
 }
