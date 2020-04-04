@@ -9,7 +9,9 @@ namespace SportsStore.Interfaces.Base
     {
         IQueryable<T> Query => Items.AsQueryable();
 
-        IEnumerable<T> Items { get; }
+        IPagedItems<T> Items { get; }
+
+        IPagedEnumerable<T> Get(int Page, int PageSize);
 
         T this[long Id] => Get(Id);
 

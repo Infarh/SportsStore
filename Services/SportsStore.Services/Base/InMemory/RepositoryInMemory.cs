@@ -18,7 +18,9 @@ namespace SportsStore.Services.Base.InMemory
 
         #region IRepository<T>
 
-        public virtual IEnumerable<T> Items => _Items.AsReadOnly();
+        public virtual IPagedItems<T> Items => new PagedItems<T>(_Items.AsReadOnly());
+
+        public IPagedEnumerable<T> Get(int Page, int PageSize) => new PagedEnumerable<T>(Items, Page, PageSize);
 
         public virtual void Add(T item)
         {

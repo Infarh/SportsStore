@@ -16,7 +16,9 @@ namespace SportsStore.Services.Base.InSQL
 
         public virtual IQueryable<T> Query => ItemsSet;
 
-        public virtual IEnumerable<T> Items => Query.AsEnumerable();
+        public virtual IPagedItems<T> Items => new PagedItems<T>(Query);
+
+        public IPagedEnumerable<T> Get(int Page, int PageSize) => new PagedEnumerable<T>(Query, Page, PageSize);
 
         protected RepositoryInSQL(SportStoreDB Context) => _Context = Context;
 
