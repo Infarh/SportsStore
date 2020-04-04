@@ -15,7 +15,7 @@
         <div class="col"></div>
     </div>
     <div>
-        @*<div class="row placeholder">
+        @*<div class="row empty-placeholder">
                 <div class="col text-center p-2">Товаров в каталоге нет...</div>
             </div>*@
         @{
@@ -58,12 +58,12 @@
 @*@section Styles
     {
         <style>
-            .placeholder {
+            .empty-placeholder {
                 visibility: collapse;
                 display: none;
             }
 
-            .placeholder:only-child {
+            .empty-placeholder:only-child {
                 visibility: visible;
                 display: flex;
             }

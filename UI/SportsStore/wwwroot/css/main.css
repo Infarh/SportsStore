@@ -3,9 +3,19 @@
 @import url(http://fonts.googleapis.com/css?family=Abel);
 
 body {
-
 }
 
 .progress-spinner {
     display: none
 }
+
+.empty-placeholder {
+    visibility: collapse;
+    display: none;
+}
+
+
+    .empty-placeholder:only-child {
+        visibility: visible;
+        display: flex;
+    }

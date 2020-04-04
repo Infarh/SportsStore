@@ -38,10 +38,23 @@ namespace SportsStore.Controllers
             return View(order);
         }
 
+        [HttpPost]
+        public IActionResult Edit(Order Order)
+        {
+            if (!ModelState.IsValid)
+                return View(nameof(Edit), Order);
+
+
+
+            return RedirectToAction(nameof(Index));
+        }
+
+
         public IActionResult Delete(Order Order)
         {
             _Orders.Delete(Order);
             return RedirectToAction(nameof(Index));
         }
+
     }
 }
