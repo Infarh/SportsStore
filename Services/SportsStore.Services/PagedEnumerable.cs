@@ -2,33 +2,34 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using SportsStore.Interfaces.Base;
 
 namespace SportsStore.Services
 {
     internal class PagedEnumerable<T> : IPagedEnumerable<T>
     {
-        private readonly IEnumerable<T> _Items;
+        private readonly IQueryable<T> _Query;
 
         public int Page { get; }
 
         public int PageSize { get; }
 
-        public PagedEnumerable(IEnumerable<T> Items, int Page, int PageSize)
+        public PagedEnumerable(IQueryable<T> Query, int Page, int PageSize)
         {
-            _Items = Items ?? throw new ArgumentNullException();
+            _Query = Query?.Skip(Page * PageSize).Take(PageSize) ?? throw new ArgumentNullException();
             this.Page = Page;
             this.PageSize = PageSize;
         }
 
-        public IEnumerator<T> GetEnumerator()
-        {
-            var items = _Items;
-            return items is IQueryable<T> query
-                ? query.Skip(Page * PageSize).Take(PageSize).GetEnumerator()
-                : items.Skip(Page * PageSize).Take(PageSize).GetEnumerator();
-        }
+        public IEnumerator<T> GetEnumerator() => _Query.GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+        Type IQueryable.ElementType => _Query.ElementType;
+
+        Expression IQueryable.Expression => _Query.Expression;
+
+        IQueryProvider IQueryable.Provider => _Query.Provider;
     }
 }

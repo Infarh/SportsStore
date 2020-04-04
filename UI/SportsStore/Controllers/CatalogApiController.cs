@@ -23,8 +23,20 @@ namespace SportsStore.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<Product>> Get() => _Products.Items.ToArray();
 
+        [HttpGet("page/{Page}({PageSize})")]
+        public ActionResult<IEnumerable<Product>> Get(int Page, int PageSize) => _Products.Get(Page, PageSize).ToArray();
+
+        [HttpGet("count")]
+        public int ProductsCount() => _Products.Query.Count();
+
         [HttpGet("category")]
         public ActionResult<IEnumerable<Category>> GetCategories() => _Categories.Items.ToArray();
+
+        [HttpGet("category/page/{Page}({PageSize})")]
+        public ActionResult<IEnumerable<Category>> GetCategories(int Page, int PageSize) => _Categories.Get(Page, PageSize).ToArray();
+
+        [HttpGet("category/count")]
+        public int CategoriesCount() => _Categories.Query.Count();
 
         /// <summary>Получить товар по указанному идентификатору</summary>
         /// <param name="Id">Идентификатор товара, который требуется получить</param>

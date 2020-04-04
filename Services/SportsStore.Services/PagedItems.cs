@@ -8,22 +8,22 @@ namespace SportsStore.Services
 {
     internal class PagedItems<T> : IPagedItems<T>
     {
-        private readonly IEnumerable<T> _Items;
+        private readonly IQueryable<T> _Query;
 
-        public PagedItems(IEnumerable<T> Items) => _Items = Items;
+        public PagedItems(IQueryable<T> Query) => _Query = Query;
 
-        public IPagedEnumerable<T> Page(int PageNumber, int PageSize) => new PagedEnumerable<T>(_Items, PageNumber, PageSize);
+        public IPagedEnumerable<T> Page(int PageNumber, int PageSize) => new PagedEnumerable<T>(_Query, PageNumber, PageSize);
 
         public IEnumerable<IPagedEnumerable<T>> GetPages(int PageSize)
         {
-            var total_count = _Items.Count();
+            var total_count = _Query.Count();
             var pages_count = (int) Math.Ceiling(total_count / (double) PageSize);
             for (var page_number = 0; page_number < pages_count; page_number++)
                 yield return Page(page_number, PageSize);
         }
 
-        public IEnumerator<T> GetEnumerator() => _Items.GetEnumerator();
+        public IEnumerator<T> GetEnumerator() => _Query.GetEnumerator();
 
-        IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable) _Items).GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable) _Query).GetEnumerator();
     }
 }
