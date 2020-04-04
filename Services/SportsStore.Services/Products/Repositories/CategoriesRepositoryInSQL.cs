@@ -4,7 +4,7 @@ using SportsStore.Interfaces.Products;
 using SportsStore.Services.Base.InSQL;
 using SportsStore.Services.Mapping;
 
-namespace SportsStore.Services.Products.InSQL
+namespace SportsStore.Services.Products.Repositories
 {
     internal class CategoriesRepositoryInSQL : RepositoryInSQL<Category>, ICategoriesRepository
     {

@@ -1,0 +1,77 @@
+﻿@model Order
+@{
+    ViewData["Title"] = Model.Id == 0 ? "Создать заказ" : $"Редактировать заказ id:{Model.Id}";
+}
+
+<h3 class="p-2 bg-primary text-white text-center">@ViewBag.Title</h3>
+
+<form asp-action="Edit">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="form-group">
+        <label asp-for="Id"></label>
+        <input asp-for="Id" class="form-control" readonly/>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="CustomerName"></label>
+        <input asp-for="CustomerName" class="form-control"/>
+        <span asp-validation-for="CustomerName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Address"></label>
+        <input asp-for="Address" class="form-control"/>
+        <span asp-validation-for="Address" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="State"></label>
+        <input asp-for="State" class="form-control"/>
+        <span asp-validation-for="State" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ZipCode"></label>
+        <input asp-for="ZipCode" class="form-control"/>
+        <span asp-validation-for="ZipCode" class="text-danger"></span>
+    </div>
+    
+    <div class="form-check">
+        <label class="form-check-label">
+            <input type="checkbox" asp-for="Shipped" class="form-check-input"/>
+            Отправлено
+        </label>
+    </div>
+    
+    <h6 class="mt-1 p-2 bg-primary text-white text-center">Товары</h6>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col font-weight-bold">Товар</div>
+            <div class="col font-weight-bold">Категория</div>
+            <div class="col font-weight-bold">Количество</div>
+        </div>
+        @{
+            var counter = 0;
+            foreach (OrderLine line in ViewBag.Lines)
+            {
+                <input type="hidden" name="lines[@counter].Id" value="@line.Id"/>
+                <input type="hidden" name="lines[@counter].ProductId" value="@line.ProductId"/>
+                <input type="hidden" name="lines[@counter].OrderId" value="@Model.Id"/>
+
+                <div class="row mt-1">
+                    <div class="col">@line.Product.Name</div>
+                    <div class="col">@line.Product.Category.Name</div>
+                    <div class="col">
+                        <input type="number" name="lines[@counter].Quantity" value="@line.Quantity" min="0"/>
+                    </div>
+                </div>
+                counter++;
+            }
+        }
+    </div>
+    <div class="text-center m-2">
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+        <a asp-action="Index" class="btn btn-secondary">Отмена</a>
+    </div>
+</form>
