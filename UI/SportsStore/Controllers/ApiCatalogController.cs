@@ -6,15 +6,15 @@ using SportsStore.Interfaces.Products;
 
 namespace SportsStore.Controllers
 {
-    [Route("api/Catalog")]
+    [Route("api/catalog")]
     [ApiController]
     [Produces("application/json")]
-    public class CatalogApiController : ControllerBase
+    public class ApiCatalogController : ControllerBase
     {
         private readonly IProductsRepository _Products;
         private readonly ICategoriesRepository _Categories;
 
-        public CatalogApiController(IProductsRepository Products, ICategoriesRepository Categories)
+        public ApiCatalogController(IProductsRepository Products, ICategoriesRepository Categories)
         {
             _Products = Products;
             _Categories = Categories;

@@ -11,7 +11,7 @@ namespace SportsStore.Controllers
 {
     [Route("api/orders")]
     [ApiController]
-    public class OrdersApiController : ControllerBase
+    public class ApiOrdersController : ControllerBase
     {
         private readonly IOrdersRepository _Orders;
 
@@ -31,7 +31,7 @@ namespace SportsStore.Controllers
             })
         };
 
-        public OrdersApiController(IOrdersRepository Orders) => _Orders = Orders;
+        public ApiOrdersController(IOrdersRepository Orders) => _Orders = Orders;
 
         [HttpGet]
         public ActionResult<IEnumerable<Order>> Get() => _Orders.Query.Select(__OrderMapper).ToArray();
