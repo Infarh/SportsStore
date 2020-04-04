@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
-using SportsStore.Domain.Models;
 using SportsStore.Domain.Models.Orders;
 using SportsStore.Interfaces.Products;
 
@@ -44,7 +43,11 @@ namespace SportsStore.Controllers
             if (!ModelState.IsValid)
                 return View(nameof(Edit), Order);
 
-
+            Order.Lines = Order.Lines.Where(line => line.Id > 0 || line.Id == 0 && line.Quantity > 0).ToArray();
+            if(Order.Id == 0)
+                _Orders.Add(Order);
+            else
+                _Orders.Update(Order);
 
             return RedirectToAction(nameof(Index));
         }

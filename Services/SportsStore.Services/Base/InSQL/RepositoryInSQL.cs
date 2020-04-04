@@ -23,6 +23,7 @@ namespace SportsStore.Services.Base.InSQL
         public virtual void Add(T item)
         {
             ItemsSet.Add(item);
+            //_Context.Entry(item).State = EntityState.Added;
             SaveChanges();
         }
 

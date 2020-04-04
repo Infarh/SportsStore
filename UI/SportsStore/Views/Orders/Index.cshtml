@@ -21,13 +21,13 @@
         {
             exist = true;
             <div class="row p-2">
-                <div class="col-1 font-weight-bold">@order.Id</div>
-                <div class="col font-weight-bold">@order.CustomerName</div>
-                <div class="col font-weight-bold">@order.ZipCode</div>
-                <div class="col font-weight-bold">@order.Lines.Sum(l => l.Quantity * l.Product.RetailPrice)</div>
-                <div class="col font-weight-bold">@order.Lines.Sum(l => l.Quantity * (l.Product.RetailPrice - l.Product.PurchasePrice))</div>
-                <div class="col-1 font-weight-bold">@(order.Shipped ? "Отправлен" : "Формируется...")</div>
-                <div class="col-3 font-weight-bold">
+                <div class="col-1">@order.Id</div>
+                <div class="col">@order.CustomerName</div>
+                <div class="col">@order.ZipCode</div>
+                <div class="col">@order.Lines.Sum(l => l.Quantity * l.Product.RetailPrice)</div>
+                <div class="col">@order.Lines.Sum(l => l.Quantity * (l.Product.RetailPrice - l.Product.PurchasePrice))</div>
+                <div class="col-1">@(order.Shipped ? "Отправлен" : "Формируется...")</div>
+                <div class="col-3">
                     <form asp-action="Delete">
                         <input type="hidden" name="Id" value="@order.Id"/>
                         <a asp-action="Edit" asp-route-Id="@order.Id" class="btn btn-outline-primary">
