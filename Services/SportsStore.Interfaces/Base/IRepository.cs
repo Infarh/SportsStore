@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using SportsStore.Domain.Models.Base.Interfaces;
+using SportsStore.Interfaces.Service;
 
 namespace SportsStore.Interfaces.Base
 {
@@ -18,10 +20,14 @@ namespace SportsStore.Interfaces.Base
 
         void Add(T item);
 
+        void AddRange(IEnumerable<T> items) => items.ForEach(Add);
+
         void Update(T item);
 
         void UpdateAll(params T[] items) => Array.ForEach(items, Update);
 
         void Delete(T item);
+
+        void Clear() => Items.ForEach(Delete);
     }
 }

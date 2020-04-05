@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using SportsStore.DAL.Context;
 using SportsStore.Domain.Models.Base.Interfaces;
 using SportsStore.Interfaces.Base;
+using SportsStore.Services.Service;
 
 namespace SportsStore.Services.Base.InSQL
 {
@@ -25,6 +27,12 @@ namespace SportsStore.Services.Base.InSQL
         {
             ItemsSet.Add(item);
             //_Context.Entry(item).State = EntityState.Added;
+            SaveChanges();
+        }
+
+        public virtual void AddRange(IEnumerable<T> items)
+        {
+            ItemsSet.AddRange(items);
             SaveChanges();
         }
 
@@ -56,6 +64,8 @@ namespace SportsStore.Services.Base.InSQL
             ItemsSet.Remove(item);
             SaveChanges();
         }
+
+        public virtual void Clear() => ItemsSet.TruncateTable();
 
         public virtual void SaveChanges() => _Context.SaveChanges();
     }

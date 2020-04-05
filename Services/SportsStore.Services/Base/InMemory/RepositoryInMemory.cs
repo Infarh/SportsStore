@@ -40,6 +40,8 @@ namespace SportsStore.Services.Base.InMemory
 
         public virtual void Delete(T item) => _Items.Remove(item);
 
+        public virtual void Clear() => _Items.Clear();
+
         #endregion
     }
 }
