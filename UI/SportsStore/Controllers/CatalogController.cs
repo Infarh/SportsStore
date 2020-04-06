@@ -1,6 +1,8 @@
 ﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using SportsStore.Domain.Models;
+using SportsStore.Infrastructure.Extensions;
 using SportsStore.Interfaces.Products;
 
 namespace SportsStore.Controllers
@@ -16,7 +18,7 @@ namespace SportsStore.Controllers
             _Categories = Categories;
         }
 
-        public IActionResult Index() => View(_Products.Items);
+        public IActionResult Index(int Page = 0, int Size = 10) => View(_Products.GetPagedItems(new PageOptions { Page = Page, Size = Size }));
 
         [HttpPost]
         public IActionResult AddProduct(Product product)
@@ -28,7 +30,7 @@ namespace SportsStore.Controllers
         public IActionResult UpdateProduct(long? Id)
         {
             ViewBag.Categories = _Categories.Items;
-            return View(Id > 0 ? _Products[(long) Id] : new Product());
+            return View(Id > 0 ? _Products[(long)Id] : new Product());
         }
 
         [HttpPost, ValidateAntiForgeryToken]

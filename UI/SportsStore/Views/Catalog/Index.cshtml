@@ -1,9 +1,13 @@
-﻿@model IEnumerable<Product>
+﻿@model PagedList<Product>
 @{
     ViewData["Title"] = "Каталог товаров";
 }
 
 <h3 class="p-2 bg-secondary text-white text-center">@ViewData["Title"]</h3>
+
+<div class="text-center">
+    <partial name="Partial/_Pagination" model="Model" />
+</div>
 
 <div class="container-fluid mt-3">
     <div class="row">
