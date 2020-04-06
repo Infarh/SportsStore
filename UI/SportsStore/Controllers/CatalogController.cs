@@ -16,7 +16,7 @@ namespace SportsStore.Controllers
             _Categories = Categories;
         }
 
-        public IActionResult Index() => View(_Products.Items as IQueryable<Product>);
+        public IActionResult Index() => View(_Products.Items);
 
         [HttpPost]
         public IActionResult AddProduct(Product product)

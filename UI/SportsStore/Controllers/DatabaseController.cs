@@ -34,18 +34,18 @@ namespace SportsStore.Controllers
                 AS
                     BEGIN
                         SET NOCOUNT ON
-                        DECLERE @i INT = 1;
-                        DECLERE @catId BIGINT;
-                        DECLERE @CatCount INT = @RowCount / 10;
-                        DECLERE @pprice DECIMAL(5,2);
-                        DECLERE @rprice DECIMAL(5,2);
+                        DECLARE @i INT = 1;
+                        DECLARE @catId BIGINT;
+                        DECLARE @CatCount INT = @RowCount / 10;
+                        DECLARE @pprice DECIMAL(5,2);
+                        DECLARE @rprice DECIMAL(5,2);
                         BEGIN TRANSACTION
                             WHILE @i <= @CatCount
                                 BEGIN
                                     INSERT INTO [Categories] (Name, Description)
                                     VALUES (CONCAT('Category-', @i), 'Test Data Category');
-                                    SET @catId = SCOPE_IDENTITY;
-                                    DECLERE @j INT = 1;
+                                    SET @catId = SCOPE_IDENTITY();
+                                    DECLARE @j INT = 1;
                                     WHILE @j <= 10
                                         BEGIN
                                             SET @pprice = RAND()*(500 - 5 + 1);
@@ -68,7 +68,7 @@ namespace SportsStore.Controllers
         }
 
         [HttpPost]
-        private IActionResult ClearData([FromServices] SportStoreDB context)
+        public IActionResult ClearData([FromServices] SportStoreDB context)
         {
             var db = context.Database;
             db.SetCommandTimeout(TimeSpan.FromMinutes(10));

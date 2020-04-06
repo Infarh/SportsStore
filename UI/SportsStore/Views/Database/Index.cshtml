@@ -5,11 +5,45 @@
 
 <h3 class="p-2 bg-primary text-white text-center">@ViewData["Title"]</h3>
 
-<form>
+<form method="post">
     <div class="form-group">
         <label>Количество создаваемых товаров</label>
-        <input class="form-control" name="Count" value="50"/>
+        <input type="number" name="Count" value="50" min="0" class="form-control"/>
     </div>
 
-    
+    <div class="text-center">
+        <button asp-action="CreateSeedData" type="submit" class="btn btn-primary">
+            Заполнить базу данных данными
+        </button>
+        <button asp-action="ClearData" type="submit" class="btn btn-danger">
+            Очистить базу данных
+        </button>
+    </div>
 </form>
+
+<hr/>
+
+<h5 class="text-center m-2">
+    Товаров в БД: @ViewBag.Count
+</h5>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-1 font-weight-bold">Id</div>
+        <div class="col font-weight-bold">Название</div>
+        <div class="col font-weight-bold">Категория</div>
+        <div class="col font-weight-bold">Цена покупки</div>
+        <div class="col font-weight-bold">Цена продажи</div>
+    </div>
+    
+    @foreach (var product in Model)
+    {
+        <div class="row">
+            <div class="col-1">@product.Id</div>
+            <div class="col">@product.Name</div>
+            <div class="col">@product.Category.Name</div>
+            <div class="col">@product.PurchasePrice</div>
+            <div class="col">@product.RetailPrice</div>
+        </div>
+    }
+</div>
