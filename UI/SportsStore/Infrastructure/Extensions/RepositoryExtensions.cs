@@ -6,8 +6,8 @@ namespace SportsStore.Infrastructure.Extensions
 {
     internal static class RepositoryExtensions
     {
-        public static PagedList<T> GetPagedItems<T>(this IRepository<T> repository, PageOptions Page) 
+        public static QueryResult<T> GetQueryItems<T>(this IRepository<T> repository, QueryOptions Query) 
             where T : class, IEntity =>
-            new PagedList<T>(repository.Query, Page);
+            new QueryResult<T>(repository.Query, Query);
     }
 }

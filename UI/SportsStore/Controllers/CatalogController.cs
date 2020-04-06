@@ -18,7 +18,9 @@ namespace SportsStore.Controllers
             _Categories = Categories;
         }
 
-        public IActionResult Index(int Page = 0, int Size = 10) => View(_Products.GetPagedItems(new PageOptions { Page = Page, Size = Size }));
+        public IActionResult Index(QueryOptions Query) => View(_Products.GetQueryItems(Query));
+
+        //public IActionResult Index2(int Page, int Size) => View("Index", _Products.Items.Page(Page, Size));
 
         [HttpPost]
         public IActionResult AddProduct(Product product)
