@@ -14,12 +14,14 @@ namespace SportsStore.Services
         public int Page { get; }
 
         public int PageSize { get; }
+        public int PagesCount { get; }
 
         public PagedEnumerable(IQueryable<T> Query, int Page, int PageSize)
         {
             _Query = Query?.Skip(Page * PageSize).Take(PageSize) ?? throw new ArgumentNullException();
             this.Page = Page;
             this.PageSize = PageSize;
+            PagesCount = (int)Math.Ceiling(Query.Count() / (double) PageSize);
         }
 
         public IEnumerator<T> GetEnumerator() => _Query.GetEnumerator();

@@ -2,6 +2,7 @@
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using SportsStore.Domain.Models;
+using SportsStore.Infrastructure.Extensions;
 using SportsStore.Interfaces.Products;
 
 namespace SportsStore.Controllers
@@ -58,11 +59,9 @@ namespace SportsStore.Controllers
         }
 
         [HttpPost]
-        public ActionResult<Product> Post([Bind("Name,Category,PurchasePrice,RetailPrice"), FromBody] Product Product)
-        {
-            _Products.Add(Product);
-            return CreatedAtAction(nameof(Get), new { Product.Id }, Product);
-        }
+        public ActionResult<Product> Post([Bind("Name,Category,PurchasePrice,RetailPrice"), FromBody] Product Product) => this
+           .With(Product, _Products.Add)
+           .CreatedAtAction(nameof(Get), new { Product.Id }, Product);
 
         [HttpPut("{Id}")]
         public IActionResult Put(long Id, [Bind("Id,Name,Category,PurchasePrice,RetailPrice"), FromBody] Product Product)

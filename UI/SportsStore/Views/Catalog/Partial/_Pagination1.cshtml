@@ -1,6 +1,6 @@
-﻿@model QueryResult<Product>
+﻿@model SportsStore.Interfaces.Base.IPagedEnumerable<Product>
 <form id="PageForm" method="get" class="form-inline d-inline-block">
-    <button name="@nameof(QueryOptions.Page)" value="@(Model.Page - 1)" class="btn btn-outline-primary @(Model.HasPreviousPage ? null : "disabled")" type="submit">
+    <button name="@nameof(QueryOptions.Page)" value="@(Model.Page - 1)" class="btn btn-outline-primary @(Model.Page > 0 ? null : "disabled")" type="submit">
         <i class="fa fa-arrow-left"></i>
     </button>
 
@@ -31,7 +31,7 @@
         }
     }
 
-    <button name="@nameof(QueryOptions.Page)" value="@(Model.Page + 1)" class="btn btn-outline-primary @(Model.HasNextPage ? null : "disabled")" type="submit">
+    <button name="@nameof(QueryOptions.Page)" value="@(Model.Page + 1)" class="btn btn-outline-primary @(Model.Page < Model.PagesCount ? null : "disabled")" type="submit">
         <i class="fa fa-arrow-right"></i>
     </button>
 

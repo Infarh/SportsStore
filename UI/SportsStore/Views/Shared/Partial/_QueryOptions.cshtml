@@ -1,0 +1,16 @@
+﻿<div class="container-fluid mt-2">
+    <div class="row m-1">
+        <div class="col"></div>
+        <div class="col-1">
+            <label class="col-form-label">Поиск</label>
+        </div>
+        <div class="col-3">
+            <select form="pageform" name="Query.@nameof(QueryOptions.SearchProperty)" class="form-control">
+                @foreach (var search in (string[]) (ViewBag.Searches ?? Enumerable.Empty<string>()))
+                {
+                    <option value="@search" selected="@(Model.Options)"></option>
+                }
+            </select>
+        </div>
+    </div>
+</div>

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using Microsoft.AspNetCore.Mvc;
 using SportsStore.Domain.Models.Orders;
+using SportsStore.Infrastructure.Extensions;
 using SportsStore.Interfaces.Products;
 
 namespace SportsStore.Controllers
@@ -42,11 +43,9 @@ namespace SportsStore.Controllers
         public ActionResult<IEnumerable<Order>> Get(int Page, int PageSize) => _Orders.Get(Page, PageSize).Select(__OrderMapper).ToArray();
 
         [HttpPost]
-        public ActionResult<Order> Post(Order Order)
-        {
-            _Orders.Add(Order);
-            return CreatedAtAction(nameof(Get), new { Order.Id }, Order);
-        }
+        public ActionResult<Order> Post(Order Order) => this
+           .With(Order, _Orders.Add)
+           .CreatedAtAction(nameof(Get), new {Order.Id}, Order);
 
         [HttpPut("{Id}")]
         public IActionResult Put(long Id, Order Order)

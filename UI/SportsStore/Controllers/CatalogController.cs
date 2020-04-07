@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.AspNetCore.Mvc;
 using SportsStore.Domain.Models;
 using SportsStore.Infrastructure.Extensions;
 using SportsStore.Interfaces.Products;
@@ -20,20 +18,16 @@ namespace SportsStore.Controllers
 
         public IActionResult Index(QueryOptions Query) => View(_Products.GetQueryItems(Query));
 
-        //public IActionResult Index2(int Page, int Size) => View("Index", _Products.Items.Page(Page, Size));
+        public IActionResult Index1(int Page = 0, int Size = 10) => View(_Products.Items.Page(Page, Size));
 
         [HttpPost]
-        public IActionResult AddProduct(Product product)
-        {
-            _Products.Add(product);
-            return RedirectToAction(nameof(Index));
-        }
+        public IActionResult AddProduct(Product product) => this
+           .With(product, _Products.Add)
+           .RedirectToAction(nameof(Index));
 
-        public IActionResult UpdateProduct(long? Id)
-        {
-            ViewBag.Categories = _Categories.Items;
-            return View(Id > 0 ? _Products[(long)Id] : new Product());
-        }
+        public IActionResult UpdateProduct(long? Id) => this
+           .With(c => c.ViewBag.Catigories = c._Categories.Items)
+           .View(Id > 0 ? _Products[(long)Id] : new Product());
 
         [HttpPost, ValidateAntiForgeryToken]
         public IActionResult UpdateProduct(Product Product)
@@ -46,14 +40,12 @@ namespace SportsStore.Controllers
             else
                 _Products.Update(Product);
 
-            return RedirectToAction("Index");
+            return this.RedirectToIndex();
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public IActionResult Delete(Product product)
-        {
-            _Products.Delete(product);
-            return RedirectToAction(nameof(Index));
-        }
+        public IActionResult Delete(Product product) => this
+           .With(product, _Products.Delete)
+           .RedirectToIndex();
     }
 }
