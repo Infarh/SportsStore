@@ -60,12 +60,17 @@ namespace SportsStore.Domain.Models
 
         private static readonly ConcurrentDictionary<(Type Source, Type Result, bool Descending), Delegate> __Selectors = new ConcurrentDictionary<(Type Source, Type Result, bool Descending), Delegate>();
 
-        private static Func<IQueryable<T>, LambdaExpression, IQueryable<T>> GetMethod<T>(Type Result, bool Descending) =>
-            (Func<IQueryable<T>, LambdaExpression, IQueryable<T>>) __Selectors.GetOrAdd((typeof(T), Result, Descending), info =>
+        private static Delegate GetMethod<T>(Type Result, bool Descending) =>
+            __Selectors.GetOrAdd((typeof(T), Result, Descending), info =>
             {
                 var (source, result, descending) = info;
                 var method = GetMethodInfo(source, result, descending);
-                return method.CreateDelegate(typeof(Func<IQueryable<T>, LambdaExpression, IQueryable<T>>));
+                var delegate_type = typeof(Func<,,>)
+                   .MakeGenericType(
+                        typeof(IQueryable<T>),
+                        typeof(Expression<>).MakeGenericType(typeof(Func<,>).MakeGenericType(typeof(T), result)),
+                        typeof(IQueryable<T>));
+                return method.CreateDelegate(delegate_type);
             });
 
         public int Page { get; set; } = 0;
@@ -98,7 +103,7 @@ namespace SportsStore.Domain.Models
             //return GetMethodInfo(typeof(T), value.Type, OrderByDescending)
             //   .Invoke(null, new object[] { query, criteria })
             //    as IQueryable<T>;
-            return GetMethod<T>(value.Type, OrderByDescending)(query, criteria);
+            return (IQueryable<T>)GetMethod<T>(value.Type, OrderByDescending).DynamicInvoke(query, criteria);
         }
 
         private IQueryable<T> Search<T>(IQueryable<T> query)
@@ -108,7 +113,7 @@ namespace SportsStore.Domain.Models
             var x = Expression.Parameter(typeof(T), "x");
 
             var value = GetProperty(x, SearchProperty);
-            if (value.Type == typeof(string))
+            if (value.Type != typeof(string))
                 value = Expression.Call(value, "ToString", Type.EmptyTypes);
 
             var body = Expression.Call(value, "Contains", Type.EmptyTypes, Expression.Constant(SearchTerm));

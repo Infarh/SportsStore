@@ -1,4 +1,4 @@
-﻿@model IQueryable<Product>
+﻿@model QueryResult<Product>
 @{
     ViewData["Title"] = "Каталог товаров";
 }
@@ -7,6 +7,11 @@
 
 <div class="text-center">
     <partial name="Partial/_Pagination" model="Model" />
+    @{
+        ViewBag.Searches = new[] { "Name", "Category.Name" };
+        ViewBag.Sorts = new[] { "Name", "Category.Name", nameof(Product.PurchasePrice), nameof(Product.RetailPrice) };
+    }
+    <partial name="Partial/_QueryOptions" model="Model.Options"/>
 </div>
 
 <div class="container-fluid mt-3">
