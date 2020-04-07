@@ -23,7 +23,7 @@ namespace SportsStore.Domain.Models
         public int PagesCount => (int) Math.Ceiling(_TotalItemsCount / (double) PageSize);
 
         public bool HasPreviousPage => Page > 0;
-        public bool HasNextPage => Page < PagesCount;
+        public bool HasNextPage => Page < PagesCount - 1;
 
         public QueryResult(IQueryable<T> query, QueryOptions Options = null) => 
             (_Items, _TotalItemsCount) = (_Options = Options)?.Items(query) ?? (query, query.Count());

@@ -1,6 +1,6 @@
 ﻿@model QueryResult<Product>
 <form id="PageForm" method="get" class="form-inline d-inline-block">
-    <button name="@nameof(QueryOptions.Page)" value="@(Model.Page - 1)" class="btn btn-outline-primary @(Model.HasPreviousPage ? null : "disabled")" type="submit">
+    <button name="@nameof(QueryOptions.Page)" value="@(Model.Page - 1)" class="btn btn-outline-primary @(Model.HasPreviousPage ? null : "disabled")" type="submit" @(Model.HasPreviousPage ? null : "disabled")>
         <i class="fa fa-arrow-left"></i>
     </button>
 
@@ -31,7 +31,7 @@
         }
     }
 
-    <button name="@nameof(QueryOptions.Page)" value="@(Model.Page + 1)" class="btn btn-outline-primary @(Model.HasNextPage ? null : "disabled")" type="submit">
+    <button name="@nameof(QueryOptions.Page)" value="@(Model.Page + 1)" class="btn btn-outline-primary @(Model.HasNextPage ? null : "disabled")" type="submit" @(Model.HasNextPage ? null : "disabled")>
         <i class="fa fa-arrow-right"></i>
     </button>
 
@@ -41,6 +41,6 @@
             <option value="@page_size" selected="@(Model.PageSize == page_size)">@page_size</option>
         }
     </select>
-    <input type="hidden" name="@nameof(QueryOptions.Page)" value="1" />
+    <input type="hidden" name="@nameof(QueryOptions.Page)" value="0" />
     <button type="submit" class="btn btn-secondary">Изменить размер страницы</button>
 </form>
