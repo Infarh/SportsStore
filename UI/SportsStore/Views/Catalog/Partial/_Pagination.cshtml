@@ -1,37 +1,58 @@
 ﻿@model QueryResult<Product>
+@{
+    var page_count = Model.PagesCount;
+    var Page = Model.Page;
+    var has_previous_page = Model.HasPreviousPage;
+    var has_next_page = Model.HasNextPage;
+}
 <form id="PageForm" method="get" class="form-inline d-inline-block">
-    <button name="@nameof(QueryOptions.Page)" value="@(Model.Page - 1)" class="btn btn-outline-primary @(Model.HasPreviousPage ? null : "disabled")" type="submit" @(Model.HasPreviousPage ? null : "disabled")>
+    <button name="@nameof(QueryOptions.Page)" 
+            value="@(Page - 1)" 
+            class="btn btn-outline-primary @(has_previous_page ? null : "disabled")" 
+            type="submit" 
+            @(has_previous_page ? null : "disabled")>
         <i class="fa fa-arrow-left"></i>
     </button>
 
-    @for (var i = 0; i < 3 && i < Model.PagesCount - 1; i++)
+    @for (var i = 0; i < 3 && i < page_count - 1; i++)
     {
-        <button name="@nameof(QueryOptions.Page)" value="@i" class="btn btn-outline-primary @(Model.Page == i ? "active" : null)" type="submit">
+        <button name="@nameof(QueryOptions.Page)" 
+                value="@i" 
+                class="btn btn-outline-primary @(Page == i ? "active" : null)" 
+                type="submit">
             @(i + 1)
         </button>
     }
-    @if (Model.Page >= 3 && Model.PagesCount - Model.Page > 3)
+    @if (Page >= 3 && page_count - Page > 3)
     {
-        if (Model.Page > 3)
+        if (Page > 3)
         {
             @:...
         }
-        <button name="@nameof(QueryOptions.Page)" value="@Model.Page" class="btn btn-outline-primary active" type="submit">
-            @(Model.Page + 1)
+        <button name="@nameof(QueryOptions.Page)" 
+                value="@Page" 
+                class="btn btn-outline-primary active" 
+                type="submit">
+            @(Page + 1)
         </button>
     }
-    @if (Model.PagesCount > 4)
+    @if (page_count > 4)
     {
         @:...
-        @for (var i = Math.Max(4, Model.PagesCount - 3); i < Model.PagesCount; i++)
+        @for (var i = Math.Max(4, page_count - 3); i < page_count; i++)
         {
-            <button name="@nameof(QueryOptions.Page)" value="@i" class="btn btn-outline-primary @(Model.Page == i ? "active" : null)" type="submit">
+            <button name="@nameof(QueryOptions.Page)" 
+                    value="@i" class="btn btn-outline-primary @(Page == i ? "active" : null)"
+                    type="submit">
                 @(i + 1)
             </button>
         }
     }
 
-    <button name="@nameof(QueryOptions.Page)" value="@(Model.Page + 1)" class="btn btn-outline-primary @(Model.HasNextPage ? null : "disabled")" type="submit" @(Model.HasNextPage ? null : "disabled")>
+    <button name="@nameof(QueryOptions.Page)" 
+            value="@(Page + 1)" class="btn btn-outline-primary @(has_next_page ? null : "disabled")" 
+            type="submit" 
+            @(has_next_page ? null : "disabled")>
         <i class="fa fa-arrow-right"></i>
     </button>
 

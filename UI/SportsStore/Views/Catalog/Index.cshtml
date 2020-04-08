@@ -1,6 +1,16 @@
-﻿@model QueryResult<Product>
+﻿@using System.Diagnostics
+@using Microsoft.Extensions.Logging
+@using SportsStore.Controllers
+@model QueryResult<Product>
+@inject ILogger<CatalogController> _Logger;
 @{
     ViewData["Title"] = "Каталог товаров";
+
+    var timer = Stopwatch.StartNew();
+    var products = Model.ToArray();
+    timer.Stop();
+    _Logger.LogInformation("Товары страницы каталога загружены за {0:0.##}с - {1} штук", timer.Elapsed.TotalSeconds, products.Length);
+
 }
 
 <h3 class="p-2 bg-secondary text-white text-center">@ViewData["Title"]</h3>
@@ -29,7 +39,7 @@
             </div>*@
         @{
             var has_any_elements = false;
-            foreach (var product in Model)
+            foreach (var product in products)
             {
                 has_any_elements = true;
                 <div class="row p-2">
