@@ -7,5 +7,7 @@ namespace SportsStore.Domain.Models
     public class Category : NamesEntity, IDescriptioned
     {
         public string Description { get; set; }
+
+        public IEnumerable<Product> Products { get; set; }
     }
 }
