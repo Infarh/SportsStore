@@ -1,10 +1,8 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using SportsStore.DAL.Context;
 using SportsStore.Infrastructure.Extensions;
 using SportsStore.Interfaces.Products;
 using SportsStore.Services.Data;
