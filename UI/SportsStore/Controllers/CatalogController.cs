@@ -1,6 +1,8 @@
-﻿using System.Linq;
+﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using SportsStore.Domain.Models;
+using SportsStore.Infrastructure.Extensions;
 using SportsStore.Interfaces.Products;
 
 namespace SportsStore.Controllers
@@ -9,27 +11,35 @@ namespace SportsStore.Controllers
     {
         private readonly IProductsRepository _Products;
         private readonly ICategoriesRepository _Categories;
+        private readonly ILogger<CatalogController> _Logger;
 
-        public CatalogController(IProductsRepository Products, ICategoriesRepository Categories)
+        public CatalogController(IProductsRepository Products, ICategoriesRepository Categories, ILogger<CatalogController> Logger)
         {
             _Products = Products;
             _Categories = Categories;
+            _Logger = Logger;
         }
 
-        public IActionResult Index() => View(_Products.Items);
+        public IActionResult Index(QueryOptions Query)
+        {
+            _Logger.LogInformation("Запрос товаров из каталога: страница {0}, выборка {1} штук", Query.Page, Query.Size);
+            var timer = Stopwatch.StartNew();
+            var page = _Products.GetQueryItems(Query);
+            timer.Stop();
+            _Logger.LogInformation("Страница сформирована за {0:0.##}с", timer.Elapsed.TotalSeconds);
+            return View(page);
+        }
+
+        public IActionResult Index1(int Page = 0, int Size = 10) => View(_Products.Items.Page(Page, Size));
 
         [HttpPost]
-        public IActionResult AddProduct(Product product)
-        {
-            _Products.Add(product);
-            return RedirectToAction(nameof(Index));
-        }
+        public IActionResult AddProduct(Product product) => this
+           .With(product, _Products.Add)
+           .RedirectToAction(nameof(Index));
 
-        public IActionResult UpdateProduct(long? Id)
-        {
-            ViewBag.Categories = _Categories.Items;
-            return View(Id > 0 ? _Products[(long) Id] : new Product());
-        }
+        public IActionResult UpdateProduct(long? Id) => this
+           .With(c => c.ViewBag.Catigories = c._Categories.Items)
+           .View(Id > 0 ? _Products[(long)Id] : new Product());
 
         [HttpPost, ValidateAntiForgeryToken]
         public IActionResult UpdateProduct(Product Product)
@@ -42,14 +52,12 @@ namespace SportsStore.Controllers
             else
                 _Products.Update(Product);
 
-            return RedirectToAction("Index");
+            return this.RedirectToIndex();
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public IActionResult Delete(Product product)
-        {
-            _Products.Delete(product);
-            return RedirectToAction(nameof(Index));
-        }
+        public IActionResult Delete(Product product) => this
+           .With(product, _Products.Delete)
+           .RedirectToIndex();
     }
 }

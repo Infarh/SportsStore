@@ -7,5 +7,7 @@ namespace SportsStore.Interfaces.Base
         int Page { get; }
 
         int PageSize { get; }
+
+        int PagesCount { get; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.AspNetCore.Mvc;
+using SportsStore.Infrastructure.Extensions;
 
 namespace SportsStore.Controllers
 {
@@ -8,24 +9,12 @@ namespace SportsStore.Controllers
     public class ConsoleController : ControllerBase
     {
         [HttpGet("Clear")]
-        public IActionResult Clear()
-        {
-            Console.Clear();
-            return Ok();
-        }
+        public IActionResult Clear() => this.Execute(Console.Clear).Ok();
 
         [HttpGet("Write/{Text}")]
-        public IActionResult Write(string Text)
-        {
-            Console.Write(Text);
-            return Ok();
-        }
+        public IActionResult Write(string Text) => this.With(Text, Console.Write).Ok();
 
         [HttpGet("WriteLine/{Text?}")]
-        public IActionResult WriteLine(string Text)
-        {
-            Console.WriteLine(Text);
-            return Ok();
-        }
+        public IActionResult WriteLine(string Text) => this.With(Text, Console.WriteLine).Ok();
     }
 }

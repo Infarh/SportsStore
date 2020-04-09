@@ -1,0 +1,59 @@
+﻿@model QueryOptions
+
+<div class="container-fluid mt-2">
+    <div class="row m-1">
+        <div class="col"></div>
+        <div class="col-1">
+            <label class="col-form-label">Поиск</label>
+        </div>
+        <div class="col-3">
+            <select form="PageForm" name="@nameof(QueryOptions.SearchProperty)" class="form-control">
+                @foreach (var search in (string[]) (ViewBag.Searches ?? Enumerable.Empty<string>()))
+                {
+                    <option value="@search" selected="@(Model.SearchProperty == search)">
+                        @(search.IndexOf('.') == -1 ? search : search.Substring(0, search.IndexOf('.')))
+                    </option>
+                }
+            </select>
+        </div>
+        <div class="col">
+            <input form="PageForm" class="form-control" name="@nameof(QueryOptions.SearchTerm)" value="@Model.SearchTerm"/>
+        </div>
+        <div class="col-1 text-right">
+            <button form="PageForm" class="btn btn-secondary" type="submit">
+                @*<i class="fa fa-search"></i>*@Найти
+            </button>
+        </div>
+        <div class="col"></div>
+    </div>
+    <div class="row m-1">
+        <div class="col"></div>
+        <div class="col-1">
+            <label class="col-form-label">Сортировка</label>
+        </div>
+        <div class="col-3">
+            <select form="PageForm" name="@nameof(QueryOptions.OrderProperty)" class="form-control">
+                @foreach (var order in (string[]) (ViewBag.Sorts ?? Enumerable.Empty<string>()))
+                {
+                    <option value="@order" selected="@(Model.OrderProperty == order)">
+                        @(order.IndexOf('.') == -1 ? order : order.Substring(0, order.IndexOf('.')))
+                    </option>
+                }
+            </select>
+        </div>
+        <div class="col form-check form-check-inline">
+            <input form="PageForm" type="checkbox" 
+                   name="@nameof(QueryOptions.OrderByDescending)" 
+                   id="@nameof(QueryOptions.OrderByDescending)"
+                   class="form-check-input" value="true"
+                   checked="@Model.OrderByDescending"/>
+            <label class="form-check-label">по убыванию</label>
+        </div>
+        <div class="col-1 text-right">
+            <button form="PageForm" class="btn btn-secondary" type="submit">
+                Сортировка
+            </button>
+        </div>
+        <div class="col"></div>
+    </div>
+</div>

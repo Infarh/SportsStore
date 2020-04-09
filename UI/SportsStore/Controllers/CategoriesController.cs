@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SportsStore.Domain.Models;
+using SportsStore.Infrastructure.Extensions;
 using SportsStore.Interfaces.Products;
 
 namespace SportsStore.Controllers
@@ -13,30 +14,22 @@ namespace SportsStore.Controllers
         public IActionResult Index() => View(_CategoriesRepository.Items);
 
         [HttpPost]
-        public IActionResult AddCategory(Category Category)
-        {
-            _CategoriesRepository.Add(Category);
-            return RedirectToAction(nameof(Index));
-        }
+        public IActionResult AddCategory(Category Category) => this
+           .With(Category, _CategoriesRepository.Add)
+           .RedirectToIndex();
 
-        public IActionResult EditCategory(long Id)
-        {
-            ViewBag.EditId = Id;
-            return View(nameof(Index), _CategoriesRepository.Items);
-        }
+        public IActionResult EditCategory(long Id) => this
+           .With(Id, (c, id) => c.ViewBag.EditId = id)
+           .ViewIndex(_CategoriesRepository.Items);
 
         [HttpPost]
-        public IActionResult UpdateCategory(Category Category)
-        {
-            _CategoriesRepository.Update(Category);
-            return RedirectToAction(nameof(Index));
-        }
+        public IActionResult UpdateCategory(Category Category) => this
+           .With(Category, _CategoriesRepository.Update)
+           .RedirectToIndex();
 
         [HttpPost]
-        public IActionResult DeleteCategory(Category Category)
-        {
-            _CategoriesRepository.Delete(Category);
-            return RedirectToAction(nameof(Index));
-        }
+        public IActionResult DeleteCategory(Category Category) => this
+           .With(Category, _CategoriesRepository.Delete)
+           .RedirectToIndex();
     }
 }

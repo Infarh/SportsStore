@@ -2,6 +2,7 @@
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using SportsStore.Domain.Models.Orders;
+using SportsStore.Infrastructure.Extensions;
 using SportsStore.Interfaces.Products;
 
 namespace SportsStore.Controllers
@@ -52,12 +53,9 @@ namespace SportsStore.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-
-        public IActionResult Delete(Order Order)
-        {
-            _Orders.Delete(Order);
-            return RedirectToAction(nameof(Index));
-        }
-
+        [HttpPost]
+        public IActionResult Delete(Order Order) => this
+           .With(Order, _Orders.Delete)
+           .RedirectToIndex();
     }
 }

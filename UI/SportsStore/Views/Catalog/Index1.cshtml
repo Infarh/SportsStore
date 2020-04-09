@@ -1,27 +1,12 @@
-﻿@using System.Diagnostics
-@using Microsoft.Extensions.Logging
-@using SportsStore.Controllers
-@model QueryResult<Product>
-@inject ILogger<CatalogController> _Logger;
+﻿@model SportsStore.Interfaces.Base.IPagedEnumerable<Product>
 @{
     ViewData["Title"] = "Каталог товаров";
-
-    var timer = Stopwatch.StartNew();
-    var products = Model.ToArray();
-    timer.Stop();
-    _Logger.LogInformation("Товары страницы каталога загружены за {0:0.##}с - {1} штук", timer.Elapsed.TotalSeconds, products.Length);
-
 }
 
 <h3 class="p-2 bg-secondary text-white text-center">@ViewData["Title"]</h3>
 
 <div class="text-center">
-    <partial name="Partial/_Pagination" model="Model" />
-    @{
-        ViewBag.Searches = new[] { "Name", "Category.Name" };
-        ViewBag.Sorts = new[] { "Name", "Category.Name", nameof(Product.PurchasePrice), nameof(Product.RetailPrice) };
-    }
-    <partial name="Partial/_QueryOptions" model="Model.Options"/>
+    <partial name="Partial/_Pagination1" model="Model" />
 </div>
 
 <div class="container-fluid mt-3">
@@ -39,7 +24,7 @@
             </div>*@
         @{
             var has_any_elements = false;
-            foreach (var product in products)
+            foreach (var product in Model)
             {
                 has_any_elements = true;
                 <div class="row p-2">

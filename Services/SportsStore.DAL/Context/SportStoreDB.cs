@@ -15,5 +15,14 @@ namespace SportsStore.DAL.Context
         public DbSet<OrderLine> OrderLines { get; set; }
 
         public SportStoreDB(DbContextOptions<SportStoreDB> Options) : base(Options) { }
+
+        protected override void OnModelCreating(ModelBuilder db)
+        {
+            db.Entity<Product>().HasIndex(p => p.Name);
+            db.Entity<Product>().HasIndex(p => p.PurchasePrice);
+            db.Entity<Product>().HasIndex(p => p.RetailPrice);
+            db.Entity<Category>().HasIndex(c => c.Name);
+            db.Entity<Category>().HasIndex(c => c.Description);
+        }
     }
 }

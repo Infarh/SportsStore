@@ -1,0 +1,46 @@
+﻿@model SportsStore.Interfaces.Base.IPagedEnumerable<Product>
+<form id="PageForm" method="get" class="form-inline d-inline-block">
+    <button name="@nameof(QueryOptions.Page)" value="@(Model.Page - 1)" class="btn btn-outline-primary @(Model.Page > 0 ? null : "disabled")" type="submit">
+        <i class="fa fa-arrow-left"></i>
+    </button>
+
+    @for (var i = 0; i < 3 && i < Model.PagesCount - 1; i++)
+    {
+        <button name="@nameof(QueryOptions.Page)" value="@i" class="btn btn-outline-primary @(Model.Page == i ? "active" : null)" type="submit">
+            @(i + 1)
+        </button>
+    }
+    @if (Model.Page >= 3 && Model.PagesCount - Model.Page > 3)
+    {
+        if (Model.Page > 3)
+        {
+            @:...
+        }
+        <button name="@nameof(QueryOptions.Page)" value="@Model.Page" class="btn btn-outline-primary active" type="submit">
+            @(Model.Page + 1)
+        </button>
+    }
+    @if (Model.PagesCount > 4)
+    {
+        @:...
+        @for (var i = Math.Max(4, Model.PagesCount - 3); i < Model.PagesCount; i++)
+        {
+            <button name="@nameof(QueryOptions.Page)" value="@i" class="btn btn-outline-primary @(Model.Page == i ? "active" : null)" type="submit">
+                @(i + 1)
+            </button>
+        }
+    }
+
+    <button name="@nameof(QueryOptions.Page)" value="@(Model.Page + 1)" class="btn btn-outline-primary @(Model.Page < Model.PagesCount ? null : "disabled")" type="submit">
+        <i class="fa fa-arrow-right"></i>
+    </button>
+
+    <select name="@nameof(QueryOptions.Size)" class="form-control ml-1 mr-1">
+        @foreach (var page_size in new int[] { 10, 25, 50, 100 })
+        {
+            <option value="@page_size" selected="@(Model.PageSize == page_size)">@page_size</option>
+        }
+    </select>
+    <input type="hidden" name="@nameof(QueryOptions.Page)" value="1" />
+    <button type="submit" class="btn btn-secondary">Изменить размер страницы</button>
+</form>
