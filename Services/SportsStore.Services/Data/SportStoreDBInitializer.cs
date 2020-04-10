@@ -15,38 +15,43 @@ namespace SportsStore.Services.Data
 
         public void Initialize() => InitializeAsync().GetAwaiter().GetResult();
 
-        public async Task InitializeAsync()
+        public async Task InitializeAsync(CancellationToken Cancel = default)
         {
-            await _Context.Database.MigrateAsync().ConfigureAwait(false);
+            await _Context.Database.MigrateAsync(cancellationToken: Cancel).ConfigureAwait(false);
 
-            if (!await _Context.Products.AnyAsync().ConfigureAwait(false))
+            await InitializeStandartData(Cancel).ConfigureAwait(false);
+        }
+
+        private async Task InitializeStandartData(CancellationToken Cancel = default)
+        {
+            if (!await _Context.Products.AnyAsync(cancellationToken: Cancel).ConfigureAwait(false))
             {
                 var water_sport = new Category { Name = "Водный спорт" };
                 var soccer = new Category { Name = "Футбол" };
                 await _Context.Products.AddRangeAsync(
-                    new Product
-                    {
-                        Name = "Каяк",
-                        Category = water_sport,
-                        PurchasePrice = 200,
-                        RetailPrice = 275
-                    },
-                    new Product
-                    {
-                        Name = "Спасательный жилет",
-                        Category = water_sport,
-                        PurchasePrice = 30,
-                        RetailPrice = 48.95m
-                    },
-                    new Product
-                    {
-                        Name = "Футбольный мяч",
-                        Category = soccer,
-                        PurchasePrice = 17,
-                        RetailPrice = 19.50m
-                    })
+                        new Product
+                        {
+                            Name = "Каяк",
+                            Category = water_sport,
+                            PurchasePrice = 200,
+                            RetailPrice = 275
+                        },
+                        new Product
+                        {
+                            Name = "Спасательный жилет",
+                            Category = water_sport,
+                            PurchasePrice = 30,
+                            RetailPrice = 48.95m
+                        },
+                        new Product
+                        {
+                            Name = "Футбольный мяч",
+                            Category = soccer,
+                            PurchasePrice = 17,
+                            RetailPrice = 19.50m
+                        })
                    .ConfigureAwait(false);
-                await _Context.SaveChangesAsync().ConfigureAwait(false);
+                await _Context.SaveChangesAsync(Cancel).ConfigureAwait(false);
             }
         }
 
