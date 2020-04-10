@@ -17,43 +17,108 @@ namespace SportsStore.Services.Data
 
         public async Task InitializeAsync(CancellationToken Cancel = default)
         {
-            await _Context.Database.MigrateAsync(cancellationToken: Cancel).ConfigureAwait(false);
+            await _Context.Database.MigrateAsync(Cancel).ConfigureAwait(false);
 
-            await InitializeStandartData(Cancel).ConfigureAwait(false);
+            await InitializeStandardData(Cancel).ConfigureAwait(false);
         }
 
-        private async Task InitializeStandartData(CancellationToken Cancel = default)
+        private async Task InitializeStandardData(CancellationToken Cancel = default)
         {
-            if (!await _Context.Products.AnyAsync(cancellationToken: Cancel).ConfigureAwait(false))
-            {
-                var water_sport = new Category { Name = "Водный спорт" };
-                var soccer = new Category { Name = "Футбол" };
-                await _Context.Products.AddRangeAsync(
-                        new Product
+            if (await _Context.Products.AnyAsync(Cancel).ConfigureAwait(false)) return;
+
+            await _Context.Categories
+               .AddRangeAsync(
+                    new Category
+                    {
+                        Name = "Водный спорт",
+                        Description = "Наделай шуму",
+                        Products = new[]
                         {
-                            Name = "Каяк",
-                            Category = water_sport,
-                            PurchasePrice = 200,
-                            RetailPrice = 275
-                        },
-                        new Product
+                            new Product
+                            {
+                                Name = "Каяк",
+                                Description = "Одноместная лодка",
+                                PurchasePrice = 200,
+                                RetailPrice = 275
+                            },
+                            new Product
+                            {
+                                Name = "Спасательный жилет",
+                                Description = "Защитный и модный",
+                                PurchasePrice = 30,
+                                RetailPrice = 48.95m
+                            },
+                        }
+                    },
+                    new Category
+                    {
+                        Name = "Футбол",
+                        Description = "Любимая игра в мире",
+                        Products = new[]
                         {
-                            Name = "Спасательный жилет",
-                            Category = water_sport,
-                            PurchasePrice = 30,
-                            RetailPrice = 48.95m
-                        },
-                        new Product
+                            new Product
+                            {
+                                Name = "Футбольный мяч",
+                                Description = "Одобренный ФИФА размер и вес",
+                                PurchasePrice = 18,
+                                RetailPrice = 19.50m
+                            },
+                            new Product
+                            {
+                                Name = "Угловые флажки",
+                                Description = "Сделай ваше игровое поле профессиональным",
+                                PurchasePrice = 52.50m,
+                                RetailPrice = 34.95m
+                            },
+                            new Product
+                            {
+                                Name = "Стадион",
+                                Description = "Компактно упакованный стадион на 35 000 мест",
+                                PurchasePrice = 75000,
+                                RetailPrice = 79500
+                            },
+                        }
+                    },
+                    new Category
+                    {
+                        Name = "Шахматы",
+                        Description = "Умственная игра",
+                        Products = new []
                         {
-                            Name = "Футбольный мяч",
-                            Category = soccer,
-                            PurchasePrice = 17,
-                            RetailPrice = 19.50m
-                        })
-                   .ConfigureAwait(false);
-                await _Context.SaveChangesAsync(Cancel).ConfigureAwait(false);
-            }
+                            new Product
+                            {
+                                Name = "Мыслящая шапка",
+                                Description = "Усиливает умственные способности на 75%",
+                                PurchasePrice = 10,
+                                RetailPrice = 16
+                            },
+                            new Product
+                            {
+                                Name = "Неустойчивый стул",
+                                Description = "Незаметно создаёт противнику неудобства",
+                                PurchasePrice = 28,
+                                RetailPrice = 29.95m
+                            },
+                            new Product
+                            {
+                                Name = "Шахматная доска",
+                                Description = "Весёлая игра для всей семьи",
+                                PurchasePrice = 68.50m,
+                                RetailPrice = 75
+                            },
+                            new Product
+                            {
+                                Name = "Блестящий король",
+                                Description = "Позолоченный и усыпанный бриллиантами король",
+                                PurchasePrice = 800,
+                                RetailPrice = 1200
+                            },
+                        }
+                    })
+               .ConfigureAwait(false);
+            await _Context.SaveChangesAsync(Cancel).ConfigureAwait(false);
         }
+
 
         public void SeedTestData(int Count)
         {
