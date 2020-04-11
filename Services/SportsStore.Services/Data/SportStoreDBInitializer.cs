@@ -119,10 +119,11 @@ namespace SportsStore.Services.Data
             await _Context.SaveChangesAsync(Cancel).ConfigureAwait(false);
         }
 
-
         public void SeedTestData(int Count)
         {
             ClearDatabase();
+
+            InitializeStandardData().Wait();
 
             var db = _Context.Database;
             db.SetCommandTimeout(TimeSpan.FromMinutes(10));
@@ -135,6 +136,8 @@ namespace SportsStore.Services.Data
         public async Task SeedTestDataAsync(int Count, CancellationToken Cancel = default)
         {
             await ClearDatabaseAsync(Cancel).ConfigureAwait(false);
+
+            await InitializeStandardData(Cancel).ConfigureAwait(false);
 
             var db = _Context.Database;
             db.SetCommandTimeout(TimeSpan.FromMinutes(10));
