@@ -38,7 +38,7 @@ namespace SportsStore.Controllers
            .RedirectToAction(nameof(Index));
 
         public IActionResult UpdateProduct(long? Id) => this
-           .With(c => c.ViewBag.Catigories = c._Categories.Items)
+           .With(c => c.ViewBag.Categories = c._Categories.Items)
            .View(Id > 0 ? _Products[(long)Id] : new Product());
 
         [HttpPost, ValidateAntiForgeryToken]
