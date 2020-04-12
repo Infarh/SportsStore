@@ -24,13 +24,11 @@ namespace SportsStore.Controllers
         {
             _Logger.LogInformation("Запрос товаров из каталога: страница {0}, выборка {1} штук", Query.Page, Query.Size);
             var timer = Stopwatch.StartNew();
-            var page = _Products.GetQuery(Query);
+            var page = _Products.Get(Query);
             timer.Stop();
             _Logger.LogInformation("Страница сформирована за {0:0.##}с", timer.Elapsed.TotalSeconds);
             return View(page);
         }
-
-        public IActionResult Index1(int Page = 0, int Size = 10) => View(_Products.Items.Page(Page, Size));
 
         [HttpPost]
         public IActionResult AddProduct(Product product) => this

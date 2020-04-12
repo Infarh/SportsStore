@@ -8,25 +8,33 @@ using System.Reflection;
 
 namespace SportsStore.Domain.Models
 {
-    public class QueryResult<T> : IQueryable<T>
+    public abstract class QueryResult
     {
-        private readonly QueryOptions _Options;
-        private readonly IQueryable<T> _Items;
-        private readonly int _TotalItemsCount;
+        public QueryOptions Options { get; }
+        public int Page => Options?.Page ?? 0;
+        public int PageSize => Options?.Size ?? 10;
 
-        private IQueryable<T> Items => _Items;
-
-        public QueryOptions Options => _Options;
-
-        public int Page => _Options?.Page ?? 0;
-        public int PageSize => _Options?.Size ?? 10;
-        public int PagesCount => (int) Math.Ceiling(_TotalItemsCount / (double) PageSize);
-
+        public int TotalItemsCount { get; }
+        public int PagesCount => (int)Math.Ceiling(TotalItemsCount / (double)PageSize);
         public bool HasPreviousPage => Page > 0;
         public bool HasNextPage => Page < PagesCount - 1;
 
-        public QueryResult(IQueryable<T> query, QueryOptions Options = null) => 
-            (_Items, _TotalItemsCount) = (_Options = Options)?.Items(query) ?? (query, query.Count());
+        protected QueryResult(QueryOptions Options, int TotalItemsCount)
+        {
+            this.Options = Options;
+            this.TotalItemsCount = TotalItemsCount;
+        }
+    }
+
+    public class QueryResult<T> : QueryResult, IQueryable<T>
+    {
+        private IQueryable<T> Items { get; }
+
+        public QueryResult(IQueryable<T> query, QueryOptions Options = null) 
+            : this(Options?.Items(query) ?? (query, query.Count()), Options) { }
+
+        private QueryResult((IQueryable<T> items, int TotalItemsCount) Result, QueryOptions Options)
+            : base(Options, Result.TotalItemsCount) => Items = Result.items;
 
         IEnumerator<T> IEnumerable<T>.GetEnumerator() => Items.GetEnumerator();
 

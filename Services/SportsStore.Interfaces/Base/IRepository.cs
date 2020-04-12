@@ -17,7 +17,7 @@ namespace SportsStore.Interfaces.Base
 
         T this[long Id] => Get(Id);
 
-        QueryResult<T> GetQuery(QueryOptions Options) => new QueryResult<T>(Query, Options);
+        QueryResult<T> Get(QueryOptions Options) => new QueryResult<T>(Query, Options);
 
         T Get(long id) => Query.FirstOrDefault(item => item.Id == id);
 
