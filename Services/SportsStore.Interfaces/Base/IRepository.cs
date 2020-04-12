@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using SportsStore.Domain.Models;
 using SportsStore.Domain.Models.Base.Interfaces;
 using SportsStore.Interfaces.Service;
 
@@ -15,6 +16,8 @@ namespace SportsStore.Interfaces.Base
         IPagedEnumerable<T> Get(int Page, int PageSize);
 
         T this[long Id] => Get(Id);
+
+        QueryResult<T> GetQuery(QueryOptions Options) => new QueryResult<T>(Query, Options);
 
         T Get(long id) => Query.FirstOrDefault(item => item.Id == id);
 

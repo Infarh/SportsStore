@@ -24,7 +24,7 @@ namespace SportsStore.Controllers
         {
             _Logger.LogInformation("Запрос товаров из каталога: страница {0}, выборка {1} штук", Query.Page, Query.Size);
             var timer = Stopwatch.StartNew();
-            var page = _Products.GetQueryItems(Query);
+            var page = _Products.GetQuery(Query);
             timer.Stop();
             _Logger.LogInformation("Страница сформирована за {0:0.##}с", timer.Elapsed.TotalSeconds);
             return View(page);
