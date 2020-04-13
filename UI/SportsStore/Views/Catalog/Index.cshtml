@@ -16,12 +16,12 @@
 <h3 class="p-2 bg-secondary text-white text-center">@ViewData["Title"]</h3>
 
 <div class="text-center">
-    <partial name="Partial/_Pagination" model="Model" />
+    <partial name="Partial/_Pagination" model="Model" view-data="@(new ViewDataDictionary(ViewData) { { "Name", "ProductQuery" } })"/>
     @{
         ViewBag.Searches = new[] { "Name", "Category.Name" };
         ViewBag.Sorts = new[] { "Name", "Category.Name", nameof(Product.PurchasePrice), nameof(Product.RetailPrice) };
     }
-    <partial name="Partial/_QueryOptions" model="Model.Options"/>
+    <partial name="Partial/_QueryOptions" model="Model.Options" view-data="@(new ViewDataDictionary(ViewData) { { "Name", "ProductQuery" } })"/>
 </div>
 
 <div class="container-fluid mt-3">

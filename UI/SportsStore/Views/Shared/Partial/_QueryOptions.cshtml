@@ -1,4 +1,11 @@
 ﻿@model QueryOptions
+@{
+    var name = ViewBag.Name as string ?? "ProductQuery";
+    if (!string.IsNullOrWhiteSpace(name) && !name.EndsWith('.'))
+    {
+        name += ".";
+    }
+}
 
 <div class="container-fluid mt-2">
     <div class="row m-1">
@@ -7,7 +14,7 @@
             <label class="col-form-label">Поиск</label>
         </div>
         <div class="col-3">
-            <select form="PageForm" name="@nameof(QueryOptions.SearchProperty)" class="form-control">
+            <select form="PageForm" name="@name@nameof(QueryOptions.SearchProperty)" class="form-control">
                 @foreach (var search in (string[]) (ViewBag.Searches ?? Enumerable.Empty<string>()))
                 {
                     <option value="@search" selected="@(Model.SearchProperty == search)">
@@ -17,7 +24,7 @@
             </select>
         </div>
         <div class="col">
-            <input form="PageForm" class="form-control" name="@nameof(QueryOptions.SearchTerm)" value="@Model.SearchTerm"/>
+            <input form="PageForm" class="form-control" name="@name@nameof(QueryOptions.SearchTerm)" value="@Model.SearchTerm"/>
         </div>
         <div class="col-1 text-right">
             <button form="PageForm" class="btn btn-secondary" type="submit">
@@ -32,7 +39,7 @@
             <label class="col-form-label">Сортировка</label>
         </div>
         <div class="col-3">
-            <select form="PageForm" name="@nameof(QueryOptions.OrderProperty)" class="form-control">
+            <select form="PageForm" name="@name@nameof(QueryOptions.OrderProperty)" class="form-control">
                 @foreach (var order in (string[]) (ViewBag.Sorts ?? Enumerable.Empty<string>()))
                 {
                     <option value="@order" selected="@(Model.OrderProperty == order)">
@@ -43,8 +50,8 @@
         </div>
         <div class="col form-check form-check-inline">
             <input form="PageForm" type="checkbox" 
-                   name="@nameof(QueryOptions.OrderByDescending)" 
-                   id="@nameof(QueryOptions.OrderByDescending)"
+                   name="@name@nameof(QueryOptions.OrderByDescending)" 
+                   id="@name@nameof(QueryOptions.OrderByDescending)"
                    class="form-check-input" value="true"
                    checked="@Model.OrderByDescending"/>
             <label class="form-check-label">по убыванию</label>

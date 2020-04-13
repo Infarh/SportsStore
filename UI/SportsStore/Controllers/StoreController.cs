@@ -17,12 +17,12 @@ namespace SportsStore.Controllers
         }
 
         public IActionResult Index(
-            [FromQuery(Name = "options")] QueryOptions ProductOptions,
-            [FromQuery(Name = "category")] QueryOptions CategoryOptions,
+            [FromQuery(Name = "options")] QueryOptions ProductQuery,
+            [FromQuery(Name = "category")] QueryOptions CategoryQuery,
             long CategoryId
         ) => this
-           .With(CategoryOptions, (c, opt) => c.ViewBag.Categories = _Categories.Get(opt))
+           .With(CategoryQuery, (c, opt) => c.ViewBag.Categories = _Categories.Get(opt))
            .With(CategoryId, (c, id) => c.ViewBag.SelectedCategoryId = id)
-           .View(_Products.Get(ProductOptions, CategoryId));
+           .View(_Products.Get(ProductQuery, CategoryId));
     }
 }

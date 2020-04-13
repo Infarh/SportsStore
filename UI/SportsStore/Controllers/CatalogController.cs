@@ -20,11 +20,11 @@ namespace SportsStore.Controllers
             _Logger = Logger;
         }
 
-        public IActionResult Index(QueryOptions Query)
+        public IActionResult Index(QueryOptions ProductQuery)
         {
-            _Logger.LogInformation("Запрос товаров из каталога: страница {0}, выборка {1} штук", Query.Page, Query.Size);
+            _Logger.LogInformation("Запрос товаров из каталога: страница {0}, выборка {1} штук", ProductQuery.Page, ProductQuery.Size);
             var timer = Stopwatch.StartNew();
-            var page = _Products.Get(Query);
+            var page = _Products.Get(ProductQuery);
             timer.Stop();
             _Logger.LogInformation("Страница сформирована за {0:0.##}с", timer.Elapsed.TotalSeconds);
             return View(page);

@@ -4,9 +4,14 @@
     var Page = Model.Page;
     var has_previous_page = Model.HasPreviousPage;
     var has_next_page = Model.HasNextPage;
+    var name = ViewBag.Name as string ?? "ProductQuery";
+    if (!string.IsNullOrWhiteSpace(name) && !name.EndsWith('.'))
+    {
+        name += ".";
+    }
 }
 <form id="PageForm" method="get" class="form-inline d-inline-block">
-    <button name="@nameof(QueryOptions.Page)" 
+    <button name="@name@nameof(QueryOptions.Page)" 
             value="@(Page - 1)" 
             class="btn btn-outline-primary @(has_previous_page ? null : "disabled")" 
             type="submit" 
@@ -16,7 +21,7 @@
 
     @for (var i = 0; i < 3 && i < page_count - 1; i++)
     {
-        <button name="@nameof(QueryOptions.Page)" 
+        <button name="@name@nameof(QueryOptions.Page)" 
                 value="@i" 
                 class="btn btn-outline-primary @(Page == i ? "active" : null)" 
                 type="submit">
@@ -29,7 +34,7 @@
         {
             @:...
         }
-        <button name="@nameof(QueryOptions.Page)" 
+        <button name="@name@nameof(QueryOptions.Page)" 
                 value="@Page" 
                 class="btn btn-outline-primary active" 
                 type="submit">
@@ -41,7 +46,7 @@
         @:...
         @for (var i = Math.Max(4, page_count - 3); i < page_count; i++)
         {
-            <button name="@nameof(QueryOptions.Page)" 
+            <button name="@name@nameof(QueryOptions.Page)" 
                     value="@i" class="btn btn-outline-primary @(Page == i ? "active" : null)"
                     type="submit">
                 @(i + 1)
@@ -49,19 +54,19 @@
         }
     }
 
-    <button name="@nameof(QueryOptions.Page)" 
+    <button name="@name@nameof(QueryOptions.Page)" 
             value="@(Page + 1)" class="btn btn-outline-primary @(has_next_page ? null : "disabled")" 
             type="submit" 
             @(has_next_page ? null : "disabled")>
         <i class="fa fa-arrow-right"></i>
     </button>
 
-    <select name="@nameof(QueryOptions.Size)" class="form-control ml-1 mr-1">
+    <select name="@name@nameof(QueryOptions.Size)" class="form-control ml-1 mr-1">
         @foreach (var page_size in new int[] { 10, 25, 50, 100 })
         {
             <option value="@page_size" selected="@(Model.PageSize == page_size)">@page_size</option>
         }
     </select>
-    <input type="hidden" name="@nameof(QueryOptions.Page)" value="0" />
+    <input type="hidden" name="@name@nameof(QueryOptions.Page)" value="0" />
     <button type="submit" class="btn btn-secondary">Изменить размер страницы</button>
 </form>
