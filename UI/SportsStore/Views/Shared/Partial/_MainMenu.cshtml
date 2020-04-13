@@ -1,9 +1,9 @@
 ﻿<ul class="navbar-nav mr-auto">
-    <li class="nav-item active">
-        <a class="nav-link" asp-controller="Home">Главная <span class="sr-only">(current)</span></a>
+    <li class="nav-item @IsActive("Store", "Index")">
+        <a asp-controller="Store" asp-action="Index" class="nav-link">Магазин <span class="sr-only">(current)</span></a>
     </li>
 
-    <li class="nav-item dropdown">
+    <li class="nav-item dropdown @IsActive("Catalog") @IsActive("Orders") @IsActive("Categories")">
         <a class="nav-link dropdown-toggle" href="#" id="productsCatalogDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Каталог
         </a>
@@ -14,8 +14,8 @@
             <a asp-controller="Orders" asp-action="Index" class="dropdown-item @IsActive("Orders")">Заказы</a>
         </div>
     </li>
-    
-    <li class="nav-item dropdown">
+
+    <li class="nav-item dropdown @IsActive("Database")">
         <a class="nav-link dropdown-toggle" href="#" id="serviceDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Сервис
         </a>
@@ -25,7 +25,7 @@
                asp-controller="Console"
                asp-action="Clear"
                ajax-loading="#ConsoleClearProgress"
-               class="nav-link">
+               class="dropdown-item">
                 Очистить
                 <i class="fa fa-spinner fa-spin progress-spinner" style="display: none" id="ConsoleClearProgress"></i>
             </a>
@@ -34,35 +34,41 @@
                asp-action="WriteLine"
                asp-route-Text="Hello World!"
                ajax-loading="#ConsoleWriteLineProgress"
-               class="nav-link">
+               class="dropdown-item">
                 Тест
                 <i class="fa fa-spinner fa-spin progress-spinner" style="display: none" id="ConsoleWriteLineProgress"></i>
             </a>
             <div class="dropdown-divider"></div>
-            <a asp-controller="Database" asp-action="Index" class="nav-link @IsActive("Database")">База данных</a>
+            <a asp-controller="Database" asp-action="Index" class="dropdown-item @IsActive("Database")">База данных</a>
         </div>
     </li>
 
     @*<li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Dropdown
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="#">Action</a>
-            <a class="dropdown-item" href="#">Another action</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Something else here</a>
-        </div>
-    </li>*@
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Dropdown
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="#">Action</a>
+                <a class="dropdown-item" href="#">Another action</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">Something else here</a>
+            </div>
+        </li>*@
     @*<li class="nav-item">
-        <a class="nav-link disabled" href="#">Disabled</a>
-    </li>*@
+            <a class="nav-link disabled" href="#">Disabled</a>
+        </li>*@
 </ul>
 
 @functions
 {
-    string IsActive(string Controller) => 
-        Equals(ViewContext.RouteData.Values["controller"], Controller) 
-            ? "active" 
+    string IsActive(string Controller) =>
+        Equals(ViewContext.RouteData.Values["controller"], Controller)
+            ? "active"
+            : null;
+
+    string IsActive(string Controller, string Action) =>
+        Equals(ViewContext.RouteData.Values["controller"], Controller)
+     && Equals(ViewContext.RouteData.Values["action"], Action)
+            ? "active"
             : null;
 }

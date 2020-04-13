@@ -53,15 +53,13 @@ namespace SportsStore
                     RequestPath = "/files"
                 });
             }
-            else
-            {
-                app.UseDefaultFiles();
-                app.UseStaticFiles();
-            }
+
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
 
             app.UseStatusCodePages();
             app.UseStatusCodePagesWithReExecute("/Error", "?code={0}");
-           
+
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>
